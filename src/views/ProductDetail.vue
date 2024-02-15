@@ -1,6 +1,5 @@
 <template>
   <div class="product-detail">
-    <Header />
     <div class="p-4">
       <div class="product-image">
         <img :src="product.image_path" alt="Product image" class="w-full" />
@@ -20,7 +19,6 @@
         <!-- Add more product details here -->
       </div>
     </div>
-    <Footer />
   </div>
 </template>
 
@@ -28,8 +26,6 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
 
 const route = useRoute();
 const product = ref(null);

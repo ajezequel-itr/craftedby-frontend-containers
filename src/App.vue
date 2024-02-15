@@ -1,8 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import Header from '@/components/Header.vue'
-import CTAButtonPrimary from '@/components/CTAButtonPrimary.vue'
-import CTAButtonAccent from '@/components/CTAButtonAccent.vue'
+import Header from '@/components/HeaderComponent.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
 </script>
 
 <template>
@@ -10,7 +9,7 @@ import CTAButtonAccent from '@/components/CTAButtonAccent.vue'
   <main class="center">
     <RouterView />
   </main>
-  <Footer />
+  <FooterComponent />
 </template>
 
 <style scoped>

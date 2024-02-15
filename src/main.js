@@ -5,16 +5,15 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-import Header from './components/Header.vue';
-import Footer from './components/Footer.vue';
+import Header from './components/HeaderComponent.vue';
+import Footer from './components/FooterComponent.vue';
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 
-app.component('Header', Header);
-app.component('Footer', Footer);
-
+app.component('HeaderComponent', Header);
+app.component('FooterComponent', Footer);
 
 app.mount('#app')
