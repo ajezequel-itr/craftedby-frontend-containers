@@ -29,15 +29,32 @@ import axios from 'axios';
 
 const route = useRoute();
 const product = ref(null);
+const loading = ref(true);
+const error = ref(null);
 
 onMounted(async () => {
+  loading.value = true;
   try {
     const response = await axios.get(`http://localhost:8000/api/products/${route.params.id}`);
+
     product.value = response.data;
-  } catch (error) {
-    console.error("Failed to fetch product details:", error);
+  } catch (err) {
+    console.error("Failed to fetch product details:", err);
+    error.value = "Failed to load product details.";
+  } finally {
+    loading.value = false;
   }
 });
+
+
+// onMounted(async () => {
+//   try {
+//     const response = await axios.get(`http://localhost:8000/api/products/${route.params.id}`);
+//     product.value = response.data;
+//   } catch (error) {
+//     console.error("Failed to fetch product details:", error);
+//   }
+// });
 </script>
 
 <style scoped>

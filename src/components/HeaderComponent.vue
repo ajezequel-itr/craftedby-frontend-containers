@@ -34,15 +34,34 @@
       <button class="btn btn-ghost btn-circle">
           <img src="../assets/icons/avatar.svg" alt="Avatar Icon">
       </button>
-      <button class="btn btn-ghost btn-circle">
-        <img src="../assets/icons/shopping_cart.svg" alt="Cart Icon">
-      </button>
+<!--      <RouterLink to="/cart">-->
+<!--        <button class="btn btn-ghost btn-circle">-->
+<!--          <img src="../assets/icons/shopping_cart.svg" alt="Cart Icon">-->
+<!--        </button>-->
+<!--      </RouterLink>-->
+      <RouterLink to="/cart">
+        <button class="btn btn-ghost btn-circle relative">
+          <img src="../assets/icons/shopping_cart.svg" alt="Cart Icon">
+          <!-- Conditionally rendered indicator -->
+          <span v-if="itemCount > 0" class="indicator">
+      {{ itemCount }}
+    </span>
+        </button>
+      </RouterLink>
+
+
     </div>
   </div>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
+import { useCartStore } from '@/stores/cart';
+import { computed } from 'vue'
+
+const cart = useCartStore();
+const itemCount = computed(() => cart.itemCount);
+
 </script>
 
 <style scoped>
@@ -62,5 +81,20 @@ import { RouterLink } from 'vue-router'
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+}
+
+.indicator {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
 }
 </style>

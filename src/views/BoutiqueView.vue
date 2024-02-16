@@ -1,16 +1,17 @@
 <template>
   <div class="container">
-    <p>Produits trouvé: {{ products.length }}</p>
     <div class="main-content">
-      <!-- Sidebar for CategoryComponent -->
+      <!-- Sidebar -->
       <div class="sidebar">
+        <p class="mb-10 mt-10">Produits trouvé: {{ products.length }}</p>
         <CategoryComponent @categoriesChanged="fetchProducts" />
+        <ColorFilterComponent/>
       </div>
       <!-- Product Grid -->
       <div class="product-grid" v-if="products && products.length">
         <div v-for="product in products" :key="product.id" class="card card-compact max-w-64 m-2">
           <router-link :to="`/products/${product.id}`">
-            <figure><img src="/assiette.png" alt="Product image" class="object-cover h-80 w-full" /></figure>
+          <figure><img src="/assiette.png" alt="Product image" class="object-cover h-80 w-full" /></figure>
             <div class="card-body">
               <h2 class="card-title open-sans-semibold uppercase">{{ product.name }}</h2>
               <p class="price-text pb-3">€ {{ product.price }}</p>
@@ -18,7 +19,8 @@
             </div>
           </router-link>
           <div class="center pt-8">
-            <CTAButtonBase text="AJOUTER AU PANIER" />
+<!--            <CTAButtonBase text="AJOUTER AU PANIER" />-->
+            <CTAButtonBase @click="addToCart" text="AJOUTER AU PANIER" />
           </div>
         </div>
       </div>
@@ -35,12 +37,20 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import CTAButtonBase from '@/components/CTAButtonBase.vue'
 import CategoryComponent from '@/components/CategoryComponent.vue'
+import ColorFilterComponent from '@/components/ColorFilterComponent.vue'
+import { useCartStore } from '@/stores/cart';
+
+const cartStore = useCartStore();
+
+const product = { /* your product data */ };
+
+function addToCart() {
+  cartStore.addToCart(product);
+}
 
 const products = ref([]);
 
-// Updated to match your API's query parameter format for filtering by category
 const fetchProducts = async (categories = []) => {
-  // Start with the base API endpoint
   let url = `${import.meta.env.VITE_API_ENDPOINT}/products/`;
 
   // If there are any categories selected, append them to the URL as query parameters
@@ -60,22 +70,10 @@ const fetchProducts = async (categories = []) => {
 
 // Initial fetch with no categories selected
 onMounted(() => {
-  fetchProducts(); // This will fetch all products initially
+  // Fetch all products initially
+  fetchProducts();
 });
 </script>
-
-<!--<style scoped>-->
-<!--.price-text {-->
-<!--  font-size: 16px;-->
-<!--}-->
-<!--.description {-->
-<!--  font-size: 16px;-->
-<!--  color: #807F86;-->
-<!--}-->
-<!--.card-body{-->
-<!--  padding-left: 0;-->
-<!--}-->
-<!--</style>-->
 
 <style scoped>
 .container {
@@ -91,7 +89,6 @@ onMounted(() => {
 }
 
 .sidebar {
-  /* Styles for the sidebar if necessary */
 }
 
 .product-grid {

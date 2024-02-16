@@ -1,7 +1,7 @@
 <template>
   <div class="category-component">
-    <h2 class="category-title">{{ title }}</h2>
-    <div class="checkboxes">
+    <h2 class="category-title pb-2 ">{{ title }}</h2>
+    <div class="checkboxes ml-5">
       <label>
         <input type="checkbox" v-model="selectedCategories.vaisselle">
         Vaisselle
@@ -34,7 +34,7 @@
 export default {
   data() {
     return {
-      title: "Catégorie",
+      title: "Catégorie:",
       selectedCategories: {
         vaisselle: false,
         ceramique: false,
