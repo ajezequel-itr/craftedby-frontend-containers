@@ -51,12 +51,12 @@ export default {
 .colors {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* Adjust the gap as needed */
+  gap: 15px;
 }
 
 .color-box {
-  width: 24px; /* Adjust size as needed */
-  height: 24px; /* Adjust size as needed */
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   position: relative;
 }
@@ -67,6 +67,6 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  border: 2px solid #fff; /* Visible indicator on top of color */
+  border: 2px solid #fff;
 }
 </style>

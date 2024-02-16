@@ -1,29 +1,33 @@
 <template>
-  <div class="category-component">
-    <h2 class="category-title pb-2 ">{{ title }}</h2>
-    <div class="checkboxes ml-5">
+  <div class="category-component open-sans-regular">
+    <h2 class="category-title pb-2 font-bold ">{{ title }}</h2>
+    <div class="radios">
       <label>
-        <input type="checkbox" v-model="selectedCategories.vaisselle">
+        <input type="radio" name="category" value="" v-model="selectedCategory ">
+        Tout afficher
+      </label>
+      <label>
+        <input type="radio" name="category" value="vaisselle" v-model="selectedCategory ">
         Vaisselle
       </label>
       <label>
-        <input type="checkbox" v-model="selectedCategories.ceramique">
+        <input type="radio" name="category" value="ceramique" v-model="selectedCategory">
         Céramique
       </label>
       <label>
-        <input type="checkbox" v-model="selectedCategories.meubles">
+        <input type="radio" name="category" value="meubles" v-model="selectedCategory">
         Meubles
       </label>
       <label>
-        <input type="checkbox" v-model="selectedCategories.vetements">
+        <input type="radio" name="category" value="vetements" v-model="selectedCategory">
         Vetements
       </label>
       <label>
-        <input type="checkbox" v-model="selectedCategories.jouets">
+        <input type="radio" name="category" value="jouets" v-model="selectedCategory">
         Jouets
       </label>
       <label>
-        <input type="checkbox" v-model="selectedCategories.nourriture">
+        <input type="radio" name="category" value="nourriture" v-model="selectedCategory">
         Nourriture
       </label>
     </div>
@@ -34,48 +38,38 @@
 export default {
   data() {
     return {
-      title: "Catégorie:",
-      selectedCategories: {
-        vaisselle: false,
-        ceramique: false,
-        meubles: false,
-        vetements: false,
-        jouets: false,
-        nourriture: false
-      }
+      title: "Catégorie",
+      selectedCategory: ''
     };
   },
   computed: {
     apiURL() {
       const baseURL = "http://localhost:8000/api/categories/";
-      const selected = Object.keys(this.selectedCategories).filter(
-        category => this.selectedCategories[category]
-      );
-      const searchQuery = selected.join(",");
-      return `${baseURL}?search=${searchQuery}`;
+      // Use the selectedCategory as the search query
+      return this.selectedCategory ? `${baseURL}?search=${this.selectedCategory}` : baseURL;
     }
   },
   watch: {
-    selectedCategories: {
-      deep: true,
-      handler(newVal) {
-        this.$emit('categoriesChanged', Object.keys(newVal).filter(key => newVal[key]));
+    selectedCategory(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.$emit('categoryChanged', newVal);
       }
     }
   }
 };
 </script>
 
+
 <style scoped>
 .category-component {
-  /* Component styles */
+  font-size: 14px;
 }
 
 .category-title {
-  /* Title styles */
+  font-size: 14px;
 }
 
-.checkboxes {
+.radios {
   display: flex;
   flex-direction: column;
   gap: 10px; /* Adjust the gap as needed */

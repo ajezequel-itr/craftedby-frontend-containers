@@ -5,8 +5,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-
 const props = defineProps({
   text: {
     type: String,
@@ -15,5 +13,5 @@ const props = defineProps({
 </script>
 
 <style scoped>
-/* Component-specific styles */
+
 </style>

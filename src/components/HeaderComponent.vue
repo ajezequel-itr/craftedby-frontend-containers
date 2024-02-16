@@ -1,11 +1,14 @@
 <template>
   <div class="navbar bg-accent">
-    <!-- Burger menu button -->
+    <!-- Burger menu button for  -->
     <div class="navbar-start">
       <div class="dropdown">
-        <label tabindex="0" class="btn btn-ghost lg:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
-        </label>
+<!--        <label tabindex="0" class="btn btn-ghost lg:hidden">-->
+<!--          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>-->
+<!--        </label>-->
+        <button class="btn btn-ghost lg:hidden">
+          <img src="../assets/icons/menu.svg" alt="Menu Icon">
+        </button>
         <div class="hidden lg:flex">
           <img alt="Vue logo" class="logo" src="@/assets/CB_logo.svg" width="43" height="43" />
           <a class="btn btn-ghost normal-case text-xl logo-text">CraftedBy</a></div>
@@ -34,11 +37,6 @@
       <button class="btn btn-ghost btn-circle">
           <img src="../assets/icons/avatar.svg" alt="Avatar Icon">
       </button>
-<!--      <RouterLink to="/cart">-->
-<!--        <button class="btn btn-ghost btn-circle">-->
-<!--          <img src="../assets/icons/shopping_cart.svg" alt="Cart Icon">-->
-<!--        </button>-->
-<!--      </RouterLink>-->
       <RouterLink to="/cart">
         <button class="btn btn-ghost btn-circle relative">
           <img src="../assets/icons/shopping_cart.svg" alt="Cart Icon">
