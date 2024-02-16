@@ -13,5 +13,7 @@ import FooterComponent from '@/components/FooterComponent.vue'
 </template>
 
 <style scoped>
-
+main {
+  min-height: 100vh;
+}
 </style>

@@ -59,6 +59,7 @@ export default {
   height: 20px;
   cursor: pointer;
   position: relative;
+  border: 1px solid;
 }
 
 .color-selected-indicator {
@@ -67,6 +68,6 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  border: 2px solid #fff;
+  border: 2px solid black;
 }
 </style>

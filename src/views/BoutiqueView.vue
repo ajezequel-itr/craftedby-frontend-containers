@@ -19,8 +19,6 @@
               <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover h-80 w-full" />
             </figure>
 
-
-
             <div class="card-body">
               <h2 class="card-title open-sans-semibold uppercase">{{ product.name }}</h2>
               <p class="price-text pb-3">€ {{ product.price }}</p>
@@ -110,7 +108,7 @@ function getFullImagePath(imagePath) {
   gap: 20px;
 }
 
-@media (min-width: 1024px) { /* Adjust breakpoint as needed */
+@media (min-width: 1024px) {
   .product-grid {
     grid-template-columns: repeat(3, 1fr); /* 3 columns for desktop */
   }
@@ -123,7 +121,6 @@ function getFullImagePath(imagePath) {
   .sidebar {
     display: none; /* Hide sidebar on small screens */
   }
-  /* Adjustments for mobile dropdown can be added here if implemented */
 }
 
 .price-text, .description {
