@@ -39,43 +39,36 @@
   </div>
 </template>
 
-
 <script setup>
-import axios from 'axios';
 import { onMounted, ref } from 'vue';
-import CTAButtonBase from '@/components/CTAButtonBase.vue'
-import CategoryComponent from '@/components/CategoryComponent.vue'
-import ColorFilterComponent from '@/components/ColorFilterComponent.vue'
-// Use pinia cart store
+import CTAButtonBase from '@/components/CTAButtonBase.vue';
+import CategoryComponent from '@/components/CategoryComponent.vue';
+import ColorFilterComponent from '@/components/ColorFilterComponent.vue';
 import { useCartStore } from '@/stores/cart';
+import api from '@/services/api';
 
 const cartStore = useCartStore();
-// const selectedProduct = ref({});
+const products = ref([]);
 
 function addToCart(productToAdd) {
   cartStore.addToCart(productToAdd);
 }
 
-const products = ref([]);
-
 const fetchProducts = async (category = '') => {
-  let url = `${import.meta.env.VITE_API_ENDPOINT}/products/`;
-
-  // Append the selected category to the URL as a query parameter if it's not empty
+  let endpoint = `products/`;
   if (category) {
-    url += `?category=${category}`;
+    endpoint += `?category=${category}`;
   }
 
   try {
-    const response = await axios.get(url);
+    const response = await api.get(endpoint);
     products.value = response.data;
   } catch (error) {
     console.error("Failed to fetch products based on the category:", error);
   }
 };
-// Initial fetch with no categories selected
+
 onMounted(() => {
-  // Fetch all products
   fetchProducts();
 });
 
@@ -85,6 +78,7 @@ function getFullImagePath(imagePath) {
   return `${apiBaseURL}${imagePath}`;
 }
 </script>
+
 
 <style scoped>
 .container {
@@ -97,9 +91,6 @@ function getFullImagePath(imagePath) {
   display: grid;
   grid-template-columns: 1fr 3fr; /* Sidebar and Main content */
   gap: 20px;
-}
-
-.sidebar {
 }
 
 .product-grid {
