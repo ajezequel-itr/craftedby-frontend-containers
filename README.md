@@ -1,17 +1,27 @@
-# craftedby-frontend
+# CraftedBy - frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+## Project Overview
+CraftedBy is a frontend application built using Vue.js, Pinia for state management, and Axios for handling HTTP requests. This project provides a structured and efficient way to manage state and interact with APIs in a Vue application.
+Features
 
-## Recommended IDE Setup
+**Vue.js**: Utilizes the Vue.js framework for building reactive and interactive user interfaces.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+**Pinia**: Implements Pinia for state management with a simple and intuitive API.
 
-## Customize configuration
+**Axios**: Integrates Axios for making HTTP requests to external APIs, providing a flexible and easy-to-use solution for handling data fetching.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+**Development Environment**: Includes a development setup with hot-reload for quick iteration and testing.
+
+**Production Build**: Generates a production-ready build with minified assets for optimized performance.
 
 ## Project Setup
 
+Clone the repository
+```sh
+git clone https://github.com/Adrew-Kirts/craftedby-frontend
+```
+
+Install dependencies
 ```sh
 npm install
 ```
@@ -28,9 +38,5 @@ npm run dev
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
 
-```sh
-npm run lint
-```
 
