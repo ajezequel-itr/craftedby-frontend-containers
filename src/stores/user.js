@@ -1,10 +1,5 @@
 import { defineStore } from 'pinia'
 
-// export const useUserStore = defineStore("user", {
-//   state: () => ({
-//     user: null,
-//   }),
-
 export const useUserStore = defineStore("user", {
   state: () => ({
     token: localStorage.getItem('token') || null,
@@ -12,11 +7,10 @@ export const useUserStore = defineStore("user", {
   }),
 
   actions: {
-    async fetchUser() {
-      const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/users`);
-
-      this.user = await res.json();
-    },
+    // async fetchUser() {
+    //   const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/users`);
+    //   this.user = await res.json();
+    // },
     async signUp(email, password) {
       const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/users`, {
       method: "POST",
