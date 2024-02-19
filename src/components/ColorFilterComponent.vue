@@ -1,7 +1,7 @@
 <template>
-  <div class="color-filter-component">
-    <h2 class="color-title pb-2">{{ title }}</h2>
-    <div class="colors ml-5">
+  <div class="color-filter-component open-sans-regular">
+    <h2 class="color-title pb-2 font-bold">{{ title }}</h2>
+    <div class="colors">
       <div v-for="(isSelected, color) in selectedColors" :key="color" class="color-box" :style="{ backgroundColor: color }" @click="toggleColor(color)">
         <div v-if="isSelected" class="color-selected-indicator"></div>
       </div>
@@ -13,7 +13,7 @@
 export default {
   data() {
     return {
-      title: "Couleurs:",
+      title: "Couleurs",
       selectedColors: {
         red: false,
         blue: false,
@@ -25,11 +25,17 @@ export default {
     };
   },
   methods: {
-    toggleColor(color) {
-      this.selectedColors[color] = !this.selectedColors[color];
+    toggleColor(selectedColor) {
+      // Reset all selections
+      Object.keys(this.selectedColors).forEach(color => {
+        this.selectedColors[color] = false;
+      });
+      // Set the selected color to true
+      this.selectedColors[selectedColor] = true;
       this.emitColors();
     },
     emitColors() {
+      // Emit the selected color
       const selected = Object.keys(this.selectedColors).filter(
         color => this.selectedColors[color]
       );
@@ -45,7 +51,7 @@ export default {
 }
 
 .color-title {
-  /* Title styles */
+  font-size: 14px;
 }
 
 .colors {
