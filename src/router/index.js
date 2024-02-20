@@ -3,8 +3,10 @@ import HomeView from '../views/HomeView.vue'
 import ProductDetail from '@/views/ProductDetail.vue'
 import BoutiqueView from '@/views/BoutiqueView.vue'
 import ContactView from '@/views/ContactView.vue'
-import CartView from '@/views/CartView.vue'
+import CartView from '@/components/CartContentComponent.vue'
 import LoginComponent from '@/components/LoginComponent.vue'
+import AdminPanelComponent from '@/components/AdminPanelComponent.vue'
+import CheckoutView from '@/views/CheckoutView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,14 +40,19 @@ const router = createRouter({
       component: ContactView,
     },
     {
-      path: '/cart',
-      name: 'cart',
-      component: CartView,
+      path: '/checkout',
+      name: 'checkout',
+      component: CheckoutView,
     },
     {
       path:'/login',
       name: 'login',
       component: LoginComponent
+    },
+    {
+      path:'/admin',
+      name: 'admin',
+      component: AdminPanelComponent
     }
   ]
 })

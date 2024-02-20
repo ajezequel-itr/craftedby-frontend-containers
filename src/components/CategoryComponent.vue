@@ -72,6 +72,6 @@ export default {
 .radios {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Adjust the gap as needed */
+  gap: 10px;
 }
 </style>

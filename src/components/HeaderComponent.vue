@@ -1,11 +1,8 @@
 <template>
   <div class="navbar bg-accent">
-    <!-- Burger menu button for  -->
+    <!-- Burger menu button for mobile  -->
     <div class="navbar-start">
       <div class="dropdown">
-<!--        <label tabindex="0" class="btn btn-ghost lg:hidden">-->
-<!--          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>-->
-<!--        </label>-->
         <button class="btn btn-ghost lg:hidden">
           <img src="../assets/icons/menu.svg" alt="Menu Icon">
         </button>
@@ -37,17 +34,15 @@
       <button class="btn btn-ghost btn-circle">
           <img src="../assets/icons/avatar.svg" alt="Avatar Icon">
       </button>
-      <RouterLink to="/cart">
-        <button class="btn btn-ghost btn-circle relative">
+      <div>
+        <button @click.stop="toggleCartDropdown" class="btn btn-ghost btn-circle relative">
           <img src="../assets/icons/shopping_cart.svg" alt="Cart Icon">
-          <!-- Conditionally rendered indicator -->
-          <span v-if="itemCount > 0" class="indicator">
-      {{ itemCount }}
-    </span>
+          <span v-if="itemCount > 0" class="indicator">{{ itemCount }}</span>
         </button>
-      </RouterLink>
-
-
+        <div v-if="showCartDropdown" ref="dropdownRef" class="cart-dropdown">
+          <CartContentComponent/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -55,14 +50,47 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { useCartStore } from '@/stores/cart';
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import CartContentComponent from '@/components/CartContentComponent.vue'
+const itemCount = computed(() => useCartStore().items.length);
+const showCartDropdown = ref(false);
+const dropdownRef = ref(null);
 
-const cart = useCartStore();
-const itemCount = computed(() => cart.itemCount);
+function toggleCartDropdown() {
+  showCartDropdown.value = !showCartDropdown.value;
+}
+
+// Click outside to close
+function handleClickOutside(event) {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
+    showCartDropdown.value = false;
+  }
+}
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 
 </script>
 
+
 <style scoped>
+
+.cart-dropdown {
+  position: absolute;
+  right: 0;
+  z-index: 100;
+  width: 300px;
+  max-height: 400px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  overflow-y: auto;
+}
+
 @media (min-width: 1024px) {
   .navbar {
     min-height: 70px;
@@ -80,7 +108,6 @@ const itemCount = computed(() => cart.itemCount);
   font-weight: 400;
   font-style: normal;
 }
-
 .indicator {
   position: absolute;
   top: -2px;

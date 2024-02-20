@@ -1,8 +1,17 @@
 <template>
   <div class="container">
     <div class="main-content">
-      <!-- Sidebar -->
-      <div class="sidebar">
+      <!-- Mobile Filters Dropdown -->
+      <div class="mobile-filters" v-if="isMobile">
+        <button class="filters-toggle-btn btn" @click="toggleFiltersDropdown">Filtrer résultats</button>
+        <div class="filters-dropdown" v-show="showFilters">
+          <CategoryComponent @categoryChanged="fetchProductsByCategory" />
+          <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
+          <PriceFilterComponent @priceChanged="fetchProductsByPrice" />
+        </div>
+      </div>
+      <!-- Sidebar for Desktop -->
+      <div class="sidebar" v-if="!isMobile">
         <p v-if="products.length > 1" class="mt-10 text-sm">Trouvé {{ products.length }} produits</p>
         <p v-else-if="products.length === 1" class="mt-10 text-sm">Trouvé {{ products.length }} produit</p>
         <div class="divider"></div>
@@ -16,10 +25,12 @@
       <div class="product-grid mt-20" v-if="products && products.length">
         <div v-for="product in products" :key="product.id" class="card card-compact max-w-64 m-2">
           <router-link :to="`/products/${product.id}`">
-<!--          <figure><img src="/assiette.png" alt="Product image" class="object-cover h-80 w-full" /></figure>-->
-            <figure>
-              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover h-80 w-full" />
-            </figure>
+
+          <figure><img src="/assiette.png" alt="Product image" class="object-cover h-80 w-full" ></figure>
+<!--            put back to get img from backend:-->
+<!--            <figure>-->
+<!--              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover h-80 w-full" />-->
+<!--            </figure>-->
 
             <div class="card-body">
               <h2 class="card-title open-sans-semibold uppercase">{{ product.name }}</h2>
@@ -43,13 +54,27 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from 'vue';
+import { onMounted, ref, reactive, computed } from 'vue';
 import CTAButtonBase from '@/components/CTAButtonBase.vue';
 import CategoryComponent from '@/components/CategoryComponent.vue';
 import ColorFilterComponent from '@/components/ColorFilterComponent.vue';
 import PriceFilterComponent from '@/components/PriceFilterComponent.vue';
 import { useCartStore } from '@/stores/cart';
 import api from '@/services/api';
+
+// State to toggle mobile filters dropdown
+const showFilters = ref(false);
+// check for mobile
+const isMobile = computed(() => window.innerWidth < 768);
+
+// Toggle mobile filters dropdown visibility
+function toggleFiltersDropdown() {
+  showFilters.value = !showFilters.value;
+}
+// Add event listener to adjust isMobile on window resize
+window.addEventListener('resize', () => {
+  isMobile.value = window.innerWidth < 768;
+});
 
 const cartStore = useCartStore();
 const products = ref([]);
@@ -63,27 +88,23 @@ const filters = reactive({
 function addToCart(productToAdd) {
   cartStore.addToCart(productToAdd);
 }
-//Add filters if set to query
+
 const fetchProducts = async () => {
-  let endpoint = `products/?`;
-  if (filters.category) {
-    endpoint += `category=${filters.category}&`;
-  }
-  if (filters.color) {
-    endpoint += `color=${filters.color}&`;
-  }
-  if (filters.priceRange.min !== null) {
-    endpoint += `minPrice=${filters.priceRange.min}&`;
-  }
-  if (filters.priceRange.max !== null) {
-    endpoint += `maxPrice=${filters.priceRange.max}&`;
-  }
+  let endpoint = 'products/';
+
+  // Filter out empty values from the filters object
+  const filteredParams = Object.fromEntries(
+    Object.entries(filters).filter(([_, value]) => value !== '' && value !== null)
+  );
 
   try {
-    const response = await api.get(endpoint);
+    //Let Axios figure out key:value filters from filters object
+    const response = await api.get(endpoint, {
+      params: filteredParams
+    });
     products.value = response.data;
   } catch (error) {
-    console.error("Failed to fetch products:", error);
+    console.error('Failed to fetch products:', error);
   }
 };
 
@@ -145,10 +166,14 @@ function getFullImagePath(imagePath) {
 
 @media (max-width: 768px) {
   .main-content {
-    grid-template-columns: 1fr; /* Stack on smaller screens */
+    grid-template-columns: 1fr; /* Change to single column layout for mobile */
+    justify-content: center; /* Center the content horizontally */
   }
   .sidebar {
     display: none; /* Hide sidebar on small screens */
+  }
+  .mobile-filters {
+    display: block;
   }
 }
 
@@ -160,4 +185,24 @@ function getFullImagePath(imagePath) {
 .card-body {
   padding-left: 0;
 }
+
+.mobile-filters {
+  display: none; /* Hidden by default, shown only in mobile view */
+}
+
+.filters-toggle-btn {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.filters-dropdown {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
 </style>
