@@ -23,7 +23,7 @@ export const useCartStore = defineStore('cart', {
       if (item) {
         item.quantity = quantity;
         if (item.quantity <= 0) {
-          this.removeFromCart(productId); // Remove item if quantity is 0 or less
+          this.removeFromCart(productId);
         } else {
           this.saveCart();
         }
@@ -42,7 +42,7 @@ export const useCartStore = defineStore('cart', {
         item.quantity--;
         this.saveCart();
       } else {
-        this.removeFromCart(productId); //  Remove the item if its quantity would drop below 1
+        this.removeFromCart(productId);
       }
     },
     clearCart() {

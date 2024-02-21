@@ -1,55 +1,14 @@
-<!--<template>-->
-<!--  <div>-->
-<!--    <p v-if="cart.itemCount > 1" class="mt-5 text-lg">Panier ({{ cart.itemCount }} produits)</p>-->
-<!--    <p v-else-if="cart.itemCount === 1" class="mt-5 text-lg">Panier ({{ cart.itemCount }} produit)</p>-->
-<!--    <div class="overflow-x-auto">-->
-<!--      <table class="table w-full table-compact sm:table-normal">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--          <th></th>-->
-<!--          <th>Nom</th>-->
-<!--          <th>Prix</th>-->
-<!--          <th>Quantité</th>-->
-<!--          <th>Total</th>-->
-<!--          <th></th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr v-for="item in cart.items" :key="item.id">-->
-<!--          <td><img :src='"http://localhost:8000/images/products/" + item.image_path' alt="Image du produit" class="w-20 h-20 object-cover"></td>-->
-<!--          <td>{{ item.name }}</td>-->
-<!--          <td>€{{ item.price }}</td>-->
-<!--&lt;!&ndash;          <td>{{ item.quantity }}</td>&ndash;&gt;-->
-<!--          <td>-->
-<!--            <button @click="decreaseQuantity(item)" class="btn btn-ghost btn-xs">-</button>-->
-<!--            {{ item.quantity }}-->
-<!--            <button @click="increaseQuantity(item)" class="btn btn-ghost btn-xs">+</button>-->
-<!--          </td>-->
-
-<!--          <td>€{{ item.quantity * item.price }}</td>-->
-<!--          <td></td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--      </table>-->
-<!--      <UserInformationFieldComponent></UserInformationFieldComponent>-->
-<!--    </div>-->
-<!--    <div class="mt-4 p-4 border-t border-gray-200">-->
-<!--      <p class="text-lg font-semibold">Prix total : €{{ cart.totalPrice }}</p>-->
-<!--    </div>-->
-<!--    <CTAButtonPrimary @click="submitOrder" text="COMMANDER"/>-->
-<!--  </div>-->
-<!--</template>-->
-
 <template>
-  <div> <!-- Increase the text size globally -->
+  <div class="container">
     <p v-if="cart.itemCount > 1" class="mt-5 text-lg">Panier ({{ cart.itemCount }} produits)</p>
     <p v-else-if="cart.itemCount === 1" class="mt-5 text-lg">Panier ({{ cart.itemCount }} produit)</p>
-    <div class="overflow-x-auto">
-      <table class="table w-full table-compact sm:table-normal text-lg"> <!-- Increase the table text size -->
-        <thead class="text-white bg-black">
+    <div class="overflow-x-auto mt-5">
+      <table class="table w-full table-compact sm:table-normal">
+      <thead class="text-white bg-black">
         <tr>
+          <th><img src="../assets/icons/trash.svg" alt="Delete Icon" ></th>
           <th class="uppercase">Photo</th>
-          <th class="uppercase">Nom</th>
+          <th class="uppercase">Produit</th>
           <th class="uppercase">Prix</th>
           <th class="uppercase">Quantité</th>
           <th class="uppercase">Total</th>
@@ -58,32 +17,29 @@
         </thead>
         <tbody>
         <tr v-for="item in cart.items" :key="item.id" class="align-middle">
-          <td>
-            <button @click="removeFromCart(item.id)" class="ml-auto btn btn-ghost btn-xs text-primary">X</button>
-            <img :src='"http://localhost:8000/images/products/" + item.image_path' alt="Image du produit" class="w-20 h-20 object-cover">
+          <td><button @click="cart.removeFromCart(item.id)" class="btn btn-ghost btn-sm text-primary mr-2 open-sans-regular">X</button></td>
+          <td class="flex items-center">
+            <img :src="'http://localhost:8000/images/products/' + item.image_path" alt="Image du produit" class="w-20 h-20 object-cover">
           </td>
           <td class="uppercase">{{ item.name }}</td>
           <td>€{{ item.price }}</td>
           <td>
-            <div class="flex items-center border-2 border-black"> <!-- Rectangle around quantity buttons -->
-              <button @click="decreaseQuantity(item)" class="btn btn-ghost btn-xs">-</button>
+            <div class="inline-block p-1 pl-2 pr-2 items-center border border-black">
+              <button @click="cart.decreaseQuantity(item.id)" class="btn btn-ghost btn-xs">-</button>
               {{ item.quantity }}
-              <button @click="increaseQuantity(item)" class="btn btn-ghost btn-xs">+</button>
+              <button @click="cart.increaseQuantity(item.id)" class="btn btn-ghost btn-xs">+</button>
             </div>
           </td>
-          <td>€{{ item.quantity * item.price }}</td>
+          <td class="text-secondary">€{{ item.quantity * item.price }}</td>
           <td></td>
         </tr>
         </tbody>
       </table>
-      <UserInformationFieldComponent class="text-lg"></UserInformationFieldComponent> <!-- Increase text size -->
-    </div>
-    <div class="mt-5 center">
-      <CTAButtonPrimary @click="submitOrder" text="COMMANDER"/>
+      <UserInformationFieldComponent class="text-lg"></UserInformationFieldComponent>
     </div>
 
-    <div class="price-box m-4 p-4 border bg-black text-white">
-      <p class="text-lg m-5">Total panier</p>
+    <div class="price-box m-4 p-4 border bg-black text-white w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3">
+    <p class="text-lg m-5">Total panier</p>
       <p>€{{ cart.totalPrice }}</p>
       <CTAButtonPrimary @click="submitOrder" text="COMMANDER" class="mt-5 "/>
     </div>
@@ -100,21 +56,6 @@ import { useRouter } from 'vue-router';
 import UserInformationFieldComponent from '@/components/UserInformationFieldComponent.vue'
 import CTAButtonPrimary from '@/components/CTAButtonPrimary.vue'
 
-function removeFromCart(id) {
-  cart.removeFromCart(id);
-}
-
-function increaseQuantity(item) {
-  cart.addToCart({ ...item, quantity: 1 });
-}
-
-function decreaseQuantity(item) {
-  if (item.quantity > 1) {
-    cart.updateQuantity(item.id, item.quantity - 1);
-  } else {
-    removeFromCart(item.id);
-  }
-}
 const user = useUserStore();
 const cart = useCartStore();
 const router = useRouter();
@@ -151,7 +92,6 @@ const submitOrder = async () => {
   try {
     const response = await OrderService.createOrder(orderData);
     alert(`Order created successfully! Order Number: ${response.order.order_number}`);
-    // Clear cart and redirect
     cart.clearCart();
     await router.push('/boutique');
   } catch (error) {
@@ -162,15 +102,26 @@ const submitOrder = async () => {
 </script>
 
 <style scoped>
+@media (max-width: 640px) {
+  .price-box {
+    width: 100%;
+  }
+}
+
+.container {
+  max-width: 50%;
+}
 
 /* Ensure all text uses Open Sans */
 * {
   font-family: 'open-sans-regular', sans-serif;
 }
 
-/* Custom styling for the total price box */
 .price-box {
-  width: 500px; /* Adjust based on content */
+  width: 400px;
+}
+
+.btn {
+  border-width: 0;
 }
 </style>
-

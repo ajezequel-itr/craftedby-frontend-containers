@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.btn:hover {
+  background-color: transparent;
+  color: inherit;
+}
+
 .open-sans-regular {
   font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;

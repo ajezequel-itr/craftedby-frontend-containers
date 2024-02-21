@@ -3,15 +3,14 @@
     <div class="main-content">
       <!-- Mobile Filters Dropdown -->
       <div class="mobile-filters" v-if="isMobile">
-<!--        <button class="filters-toggle-btn btn" @click="toggleFiltersDropdown">Filtrer résultats</button>-->
-        <CTAButtonBase class="mt-2" label="Filtres" text="Filtres" @click="toggleFiltersDropdown" />
+        <CTAButtonBase class="mt-2" label="Filtres" text="Affiner la recherche" @click="toggleFiltersDropdown" />
         <div class="filters-dropdown" v-show="showFilters">
           <CategoryComponent @categoryChanged="fetchProductsByCategory" />
           <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
           <PriceFilterComponent @priceChanged="fetchProductsByPrice" />
         </div>
       </div>
-      <!-- Sidebar for Desktop -->
+      <!-- Sidebar for desktop -->
       <div class="sidebar" v-if="!isMobile">
         <p v-if="products.length > 1" class="mt-10 text-sm">Trouvé {{ products.length }} produits</p>
         <p v-else-if="products.length === 1" class="mt-10 text-sm">Trouvé {{ products.length }} produit</p>
@@ -22,8 +21,8 @@
         <div class="divider"></div>
         <PriceFilterComponent @priceChanged="fetchProductsByPrice" />
       </div>
-      <!-- Product Grid -->
-      <div class="product-grid mt-20" v-if="products && products.length">
+      <!-- Product grid -->
+      <div class="product-grid" v-if="products && products.length">
         <div v-for="product in products" :key="product.id" class="card card-compact max-w-64 m-2">
           <router-link :to="`/products/${product.id}`">
 
@@ -41,7 +40,7 @@
           </router-link>
           <div class="center pt-8">
 <!--            Show not avaivble instead of add to cart if stock = 0-->
-            <CTAButtonBase v-if="product.stock > 0" @click="addToCart(product)" text="AJOUTER AU PANIER" />
+            <CTAButtonBase v-if="product.stock > 0" @click="cartStore.addToCart(product)" text="AJOUTER AU PANIER" />
             <CTAButtonBase v-else-if="product.stock <= 0" text="PLUS DISPONIBLE" />
           </div>
         </div>
@@ -66,7 +65,7 @@ import api from '@/services/api';
 // State to toggle mobile filters dropdown
 const showFilters = ref(false);
 // check for mobile
-const isMobile = computed(() => window.uinnerWidth < 768);
+const isMobile = computed(() => window.innerWidth < 640);
 
 // Toggle mobile filters dropdown visibility
 function toggleFiltersDropdown() {
@@ -74,10 +73,11 @@ function toggleFiltersDropdown() {
 }
 // Add event listener to adjust isMobile on window resize
 window.addEventListener('resize', () => {
-  isMobile.value = window.innerWidth < 768;
+  isMobile.value = window.innerWidth < 640;
 });
 
 const cartStore = useCartStore();
+
 const products = ref([]);
 // Use a reactive object to maintain the state of all filters
 const filters = reactive({
@@ -85,10 +85,6 @@ const filters = reactive({
   color: '',
   priceRange: { min: null, max: null }
 });
-
-function addToCart(productToAdd) {
-  cartStore.addToCart(productToAdd);
-}
 
 const fetchProducts = async () => {
   let endpoint = 'products/';
@@ -141,11 +137,7 @@ function getFullImagePath(imagePath) {
 </script>
 
 <style scoped>
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
+
 
 .main-content {
   display: grid;
@@ -170,6 +162,8 @@ function getFullImagePath(imagePath) {
     grid-template-columns: 1fr; /* Change to single column layout for mobile */
     justify-content: center; /* Center the content horizontally */
     align-items: start; /* Align items to the start vertically */
+    margin: 0 auto;
+    max-width: 50%;
   }
 
   .sidebar {

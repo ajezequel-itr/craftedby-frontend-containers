@@ -2,7 +2,8 @@
 
 ## Project Overview
 CraftedBy is a frontend application built using Vue.js, Pinia for state management, and Axios for handling HTTP requests. This project provides a structured and efficient way to manage state and interact with APIs in a Vue application.
-Features
+
+## Features
 
 **Vue.js**: Utilizes the Vue.js framework for building reactive and interactive user interfaces.
 
