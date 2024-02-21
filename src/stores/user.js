@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import api from '@/services/api.js'
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -8,41 +9,37 @@ export const useUserStore = defineStore("user", {
   }),
 
   actions: {
-    // async fetchUser() {
-    //   const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/users`);
-    //   this.user = await res.json();
-    // },
-    async signUp(email, password) {
-      const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/users`, {
-      method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      this.user = await res.json();
-    },
-    async signIn(email, password) {
-      const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      this.user = await res.json();
+    async signUp(userData) {
+      const res = await api.post(`/users`, userData);
+      this.user = res.data;
+      this.storeUser(res.data.token, res.data.user);
     },
 
-    storeLoggedInUser(token, user) {
+    async signIn(email, password) {
+        const res = await api.post('/login', { email, password });
+        this.storeUser(res.data.token, res.data.user);
+    },
+
+    storeUser(token, user) {
       // Save the token to localStorage
       localStorage.setItem('token', token);
-
       // Save the user to localStorage
       localStorage.setItem('user', JSON.stringify(user));
 
       // Update the store state
       this.token = token;
       this.storedUser = user;
+    },
+
+    logout() {
+      // Clear the token and user from localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+
+      // Reset the store state
+      this.token = null;
+      this.storedUser = null;
+      this.userObject = null;
     }
 
   },

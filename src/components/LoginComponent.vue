@@ -1,6 +1,4 @@
 <template>
-<!--  <h2>Salut, {{ userStore.user.user.first_name }} </h2>-->
-
   <form @submit.prevent="login">
     <label>Email</label>
     <input type="email" v-model="email" />
@@ -27,7 +25,7 @@ export default {
   methods: {
     async login() {
       await this.userStore.signIn(this.email, this.password);
-      this.userStore.storeLoggedInUser(this.userStore.user.token, this.userStore.user.user);
+      this.userStore.storeUser(this.userStore.user.token, this.userStore.user.user);
     },
   },
 };
