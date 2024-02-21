@@ -11,7 +11,7 @@
           <a class="btn btn-ghost normal-case text-xl logo-text">CraftedBy</a></div>
         <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
           <!-- Menu items -->
-          <li><RouterLink to="/">Accueil</RouterLink></li>
+          <li><RouterLink  to="/">Accueil</RouterLink></li>
           <li><Router-link to="/boutique">Boutique</Router-link></li>
           <li><RouterLink to="/about">A propos</RouterLink></li>
           <li><RouterLink to="/contact">Contact</RouterLink></li>
