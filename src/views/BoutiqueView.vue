@@ -3,7 +3,8 @@
     <div class="main-content">
       <!-- Mobile Filters Dropdown -->
       <div class="mobile-filters" v-if="isMobile">
-        <button class="filters-toggle-btn btn" @click="toggleFiltersDropdown">Filtrer résultats</button>
+<!--        <button class="filters-toggle-btn btn" @click="toggleFiltersDropdown">Filtrer résultats</button>-->
+        <CTAButtonBase class="mt-2" label="Filtres" text="Filtres" @click="toggleFiltersDropdown" />
         <div class="filters-dropdown" v-show="showFilters">
           <CategoryComponent @categoryChanged="fetchProductsByCategory" />
           <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
@@ -65,7 +66,7 @@ import api from '@/services/api';
 // State to toggle mobile filters dropdown
 const showFilters = ref(false);
 // check for mobile
-const isMobile = computed(() => window.innerWidth < 768);
+const isMobile = computed(() => window.uinnerWidth < 768);
 
 // Toggle mobile filters dropdown visibility
 function toggleFiltersDropdown() {
@@ -164,14 +165,17 @@ function getFullImagePath(imagePath) {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .main-content {
     grid-template-columns: 1fr; /* Change to single column layout for mobile */
     justify-content: center; /* Center the content horizontally */
+    align-items: start; /* Align items to the start vertically */
   }
+
   .sidebar {
     display: none; /* Hide sidebar on small screens */
   }
+
   .mobile-filters {
     display: block;
   }
@@ -184,18 +188,6 @@ function getFullImagePath(imagePath) {
 
 .card-body {
   padding-left: 0;
-}
-
-.mobile-filters {
-  display: none; /* Hidden by default, shown only in mobile view */
-}
-
-.filters-toggle-btn {
-  background-color: #f0f0f0;
-  border: none;
-  padding: 10px 20px;
-  margin-bottom: 10px;
-  cursor: pointer;
 }
 
 .filters-dropdown {

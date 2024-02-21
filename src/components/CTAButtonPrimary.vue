@@ -1,5 +1,5 @@
 <template>
-  <button class="btn bg-primary btn-wide rounded-none text-white open-sans-semibold hover:bg-primary">
+  <button class="btn bg-primary btn-wide rounded-none text-white open-sans-regular hover:bg-primary">
     {{ text }}
   </button>
 </template>

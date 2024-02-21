@@ -45,7 +45,7 @@ export default {
   computed: {
     apiURL() {
       const baseURL = "http://localhost:8000/api/categories/";
-      // Use the selectedCategory as the search query
+      // Use selectedCategory as the search query
       return this.selectedCategory ? `${baseURL}?search=${this.selectedCategory}` : baseURL;
     }
   },

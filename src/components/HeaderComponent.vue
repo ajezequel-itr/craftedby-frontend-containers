@@ -31,9 +31,11 @@
 
     <!-- Profile and Cart buttons -->
     <div class="navbar-end">
-      <button class="btn btn-ghost btn-circle">
-          <img src="../assets/icons/avatar.svg" alt="Avatar Icon">
-      </button>
+<!--      <button class="btn btn-ghost btn-circle" >-->
+<!--          <img src="../assets/icons/avatar.svg" alt="Avatar Icon">-->
+<!--      </button>-->
+      <RouterLink class="btn btn-ghost btn-circle" to="/profile"><img src="../assets/icons/avatar.svg" alt="Avatar Icon" ></RouterLink>
+
       <div>
         <button @click.stop="toggleCartDropdown" class="btn btn-ghost btn-circle relative">
           <img src="../assets/icons/shopping_cart.svg" alt="Cart Icon">
