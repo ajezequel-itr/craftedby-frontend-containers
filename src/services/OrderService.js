@@ -1,4 +1,4 @@
-import api from './api'; // Adjust the import path to where your api.js is located
+import api from './api';
 
 export default {
   async createOrder(orderData) {

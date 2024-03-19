@@ -6,7 +6,8 @@ import FooterComponent from '@/components/FooterComponent.vue'
 
 <template>
   <Header />
-  <main class="center">
+<!--  <main class="center">-->
+  <main class="flex justify-center items-center">
     <RouterView />
   </main>
   <FooterComponent />

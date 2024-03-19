@@ -2,8 +2,8 @@
   <div class="price-filter-component open-sans-regular">
     <h2 class="price-title pb-2 font-bold">Prix</h2>
     <div class="inputs">
-      <input type="number" placeholder="min." v-model.number="minPrice" @input="updatePriceFilter" class="price-input">
-      <input type="number" placeholder="max." v-model.number="maxPrice" @input="updatePriceFilter" class="price-input">
+      <input type="number" placeholder="min." v-model.number="minPrice" @input="updatePriceFilter" class="price-input w-full px-2 py-1">
+      <input type="number" placeholder="max." v-model.number="maxPrice" @input="updatePriceFilter" class="price-input w-full px-2 py-1">
     </div>
   </div>
 </template>

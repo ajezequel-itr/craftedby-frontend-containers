@@ -1,18 +1,26 @@
 <template>
   <div class="container">
-    <div class="main-content">
+    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5">
       <!-- Mobile Filters Dropdown -->
-      <div class="mobile-filters" v-if="isMobile">
-        <CTAButtonBase class="mt-2" label="Filtres" text="Affiner la recherche" @click="toggleFiltersDropdown" />
+      <div class="block md:hidden">
+<!--      <CTAButtonBase class="mt-2" label="Filtres" text="FILTRER" @click="toggleFiltersDropdown" />-->
+        <div class="flex flex-row mt-10 ml-8">
+          <button @click="toggleFiltersDropdown">
+          <img src="../assets/icons/filters.svg" alt="Filter Icon">
+        </button>
+          <p class="ml-2">FILTRER</p>
+        </div>
         <div class="filters-dropdown" v-show="showFilters">
           <CategoryComponent @categoryChanged="fetchProductsByCategory" />
           <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
           <PriceFilterComponent @priceChanged="fetchProductsByPrice" />
         </div>
+        <p v-if="products.length > 1" class="mt-5 ml-8 text-sm">Trouvé {{ products.length }} produits</p>
+        <p v-else-if="products.length === 1" class="mt-5 ml-8 text-sm">Trouvé {{ products.length }} produit</p>
       </div>
       <!-- Sidebar for desktop -->
-      <div class="sidebar" v-if="!isMobile">
-        <p v-if="products.length > 1" class="mt-10 text-sm">Trouvé {{ products.length }} produits</p>
+      <div class="hidden md:block md:col-span-1">
+      <p v-if="products.length > 1" class="mt-10 text-sm">Trouvé {{ products.length }} produits</p>
         <p v-else-if="products.length === 1" class="mt-10 text-sm">Trouvé {{ products.length }} produit</p>
         <div class="divider"></div>
         <CategoryComponent @categoryChanged="fetchProductsByCategory" />
@@ -20,10 +28,12 @@
         <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
         <div class="divider"></div>
         <PriceFilterComponent @priceChanged="fetchProductsByPrice" />
+        <div class="divider"></div>
+        <CTAButtonBase @click="clearAllFilters" text="Réinitialiser les filtres" />
       </div>
       <!-- Product grid -->
-      <div class="product-grid" v-if="products && products.length">
-        <div v-for="product in products" :key="product.id" class="card card-compact max-w-64 m-2">
+      <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5" v-if="products && products.length">
+      <div v-for="product in products" :key="product.id" class="card w-full m-2">
           <router-link :to="`/products/${product.id}`">
 
           <figure><img src="/assiette.png" alt="Product image" class="object-cover h-80 w-full" ></figure>
@@ -32,14 +42,14 @@
 <!--              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover h-80 w-full" />-->
 <!--            </figure>-->
 
-            <div class="card-body">
+            <div class="card-body pl-2">
               <h2 class="card-title open-sans-semibold uppercase">{{ product.name }}</h2>
               <p class="price-text pb-3">€ {{ product.price }}</p>
-              <p class="description">Lorem ipsum dolor sit amet conse bolli tetur conjo</p>
+              <p class="description line-clamp-2">{{ product.description }}</p>
             </div>
           </router-link>
-          <div class="center pt-8">
-<!--            Show not avaivble instead of add to cart if stock = 0-->
+          <div>
+<!--            Show not available instead of add to cart if stock = 0 -->
             <CTAButtonBase v-if="product.stock > 0" @click="cartStore.addToCart(product)" text="AJOUTER AU PANIER" />
             <CTAButtonBase v-else-if="product.stock <= 0" text="PLUS DISPONIBLE" />
           </div>
@@ -54,7 +64,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive, computed } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import CTAButtonBase from '@/components/CTAButtonBase.vue';
 import CategoryComponent from '@/components/CategoryComponent.vue';
 import ColorFilterComponent from '@/components/ColorFilterComponent.vue';
@@ -64,17 +74,11 @@ import api from '@/services/api';
 
 // State to toggle mobile filters dropdown
 const showFilters = ref(false);
-// check for mobile
-const isMobile = computed(() => window.innerWidth < 640);
 
 // Toggle mobile filters dropdown visibility
 function toggleFiltersDropdown() {
   showFilters.value = !showFilters.value;
 }
-// Add event listener to adjust isMobile on window resize
-window.addEventListener('resize', () => {
-  isMobile.value = window.innerWidth < 640;
-});
 
 const cartStore = useCartStore();
 
@@ -134,54 +138,23 @@ function getFullImagePath(imagePath) {
   return `${apiBaseURL}${imagePath}`;
 }
 
+const clearAllFilters = () => {
+  filters.category = '';
+  filters.color = '';
+  filters.priceRange = { min: null, max: null };
+
+  // Close the mobile filter dropdown after clearing
+  showFilters.value = false;
+  fetchProducts();
+};
+
 </script>
 
 <style scoped>
 
-
-.main-content {
-  display: grid;
-  grid-template-columns: 1fr 3fr; /* Sidebar and Main content */
-  gap: 20px;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr); /* Default to 1 column for mobile */
-  gap: 20px;
-}
-
-@media (min-width: 1024px) {
-  .product-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for desktop */
-  }
-}
-
-@media (max-width: 640px) {
-  .main-content {
-    grid-template-columns: 1fr; /* Change to single column layout for mobile */
-    justify-content: center; /* Center the content horizontally */
-    align-items: start; /* Align items to the start vertically */
-    margin: 0 auto;
-    max-width: 50%;
-  }
-
-  .sidebar {
-    display: none; /* Hide sidebar on small screens */
-  }
-
-  .mobile-filters {
-    display: block;
-  }
-}
-
 .price-text, .description {
   font-size: 16px;
   color: #807F86;
-}
-
-.card-body {
-  padding-left: 0;
 }
 
 .filters-dropdown {
@@ -189,6 +162,10 @@ function getFullImagePath(imagePath) {
   flex-direction: column;
   padding: 10px;
   border: 1px solid #ccc;
+}
+
+.card-body {
+  min-height: 200px;
 }
 
 </style>
