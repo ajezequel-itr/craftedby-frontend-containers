@@ -14,6 +14,7 @@
           <CategoryComponent @categoryChanged="fetchProductsByCategory" />
           <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
           <PriceFilterComponent @priceChanged="fetchProductsByPrice" />
+          <CTAButtonBase class="mt-4" @click="clearAllFilters" text="Réinitialiser les filtres" />
         </div>
         <p v-if="products.length > 1" class="mt-5 ml-8 text-sm">Trouvé {{ products.length }} produits</p>
         <p v-else-if="products.length === 1" class="mt-5 ml-8 text-sm">Trouvé {{ products.length }} produit</p>
@@ -33,13 +34,13 @@
       </div>
       <!-- Product grid -->
       <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5" v-if="products && products.length">
-      <div v-for="product in products" :key="product.id" class="card w-full m-2">
+      <div v-for="product in products" :key="product.id" class="card w-full">
           <router-link :to="`/products/${product.id}`">
 
-          <figure><img src="/assiette.png" alt="Product image" class="object-cover h-80 w-full" ></figure>
+          <figure><img src="/assiette.png" alt="Product image" class="object-cover w-full" ></figure>
 <!--            put back to get img from backend:-->
 <!--            <figure>-->
-<!--              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover h-80 w-full" />-->
+<!--              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover w-full" />-->
 <!--            </figure>-->
 
             <div class="card-body pl-2">

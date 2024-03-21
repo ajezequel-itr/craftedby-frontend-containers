@@ -91,9 +91,9 @@ const submitOrder = async () => {
 
   try {
     const response = await OrderService.createOrder(orderData);
-    alert(`Order created successfully! Order Number: ${response.order.order_number}`);
+    alert(`Merci pour votre commande! Numero de commande: ${response.order.order_number}`);
     cart.clearCart();
-    await router.push('/boutique');
+    await router.push('/profil');
   } catch (error) {
     console.error('Error creating order:', error.message || 'Unknown error');
     alert('Failed to create order.');
