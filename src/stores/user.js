@@ -11,7 +11,6 @@ export const useUserStore = defineStore("user", {
   actions: {
     async signUp(userData) {
       const res = await api.post(`/users`, userData);
-      this.user = res.data;
       this.storeUser(res.data.token, res.data.user);
     },
 
@@ -29,6 +28,16 @@ export const useUserStore = defineStore("user", {
       // Update the store state
       this.token = token;
       this.storedUser = user;
+      this.userObject = user;
+    },
+
+    storeOnlyUser(user) {
+      // Save the user to localStorage
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Update the store state
+      this.storedUser = user;
+      this.userObject = user;
     },
 
     logout() {
