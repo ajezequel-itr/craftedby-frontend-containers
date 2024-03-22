@@ -1,11 +1,10 @@
 <template>
-  <div class="home-view mx-auto">
-    <img src="@/assets/images/flat-lay-plates.webp" alt="Flat Lay Plates" class="header-photo w-full hidden md:flex">
-
+  <div class="mx-auto">
+<BannerComponent></BannerComponent>
     <!-- PERSONALISABLE Section -->
-    <div class="text-center mt-20 mb-10">
-      <div class="container mx-auto">
-        <h2 class="text-3xl open-sans-semibold mb-10">PERSONALISABLE</h2>
+    <div class="md:mt-20 mt-10 mb-10">
+      <div class="mx-auto">
+        <h2 class="text-center text-3xl open-sans-semibold mb-10">PERSONALISABLE</h2>
         <div
           class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5"
           v-if="slicedCustomProducts && slicedCustomProducts.length">
@@ -48,7 +47,7 @@
         </div>
 
         <div class="aspect-square flex justify-center items-center md:max-w-80">
-          <img src="/assiette.png" alt="Artisan Products" class="object-cover w-full h-full">
+          <img src="@/assets/images/tools-pottery-table.webp" alt="Artisan Products" class="object-cover w-full h-full">
         </div>
         <div class="aspect-square flex flex-col justify-center items-center bg-gray-50 text-black p-5 space-y-4">
           <p class="px-4 py-2 text-lg">PRODUITS DE L'ARTISAN</p>
@@ -59,9 +58,9 @@
     </div>
 
     <!-- DECOUVRIR DES CREATIONS Section -->
-    <div class="text-center mt-20 mb-10">
-      <div class="container mx-auto">
-        <h2 class="text-3xl open-sans-semibold">DECOUVRIR DES CREATIONS</h2>
+    <div class="md:mt-20 mt-10 mb-10">
+      <div class="mx-auto">
+        <h2 class="text-center text-3xl open-sans-semibold mb-10">DECOUVRIR DES CREATIONS</h2>
         <div
           class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5"
           v-if="slicedCustomProducts && slicedCustomProducts.length">
@@ -98,6 +97,7 @@ import { computed, onMounted, ref } from 'vue'
 import api from '@/services/api'
 import CTAButtonBase from '@/components/CTAButtonBase.vue'
 import { useCartStore } from '@/stores/cart.js'
+import BannerComponent from '@/components/BannerComponent.vue'
 
 const customisableProducts = ref([])
 const allProducts = ref([])
@@ -133,6 +133,7 @@ const cartStore = useCartStore()
 </script>
 
 <style scoped>
+
 .price-text, .description {
   font-size: 16px;
   color: #807F86;
@@ -140,10 +141,5 @@ const cartStore = useCartStore()
 
 .card-body {
   min-height: 200px;
-}
-
-.header-photo {
-  max-height: 500px;
-  object-fit: cover;
 }
 </style>
