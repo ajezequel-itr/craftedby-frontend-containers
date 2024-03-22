@@ -28,7 +28,6 @@ export const useUserStore = defineStore("user", {
       // Update the store state
       this.token = token;
       this.storedUser = user;
-      this.userObject = user;
     },
 
     storeOnlyUser(user) {
@@ -37,7 +36,6 @@ export const useUserStore = defineStore("user", {
 
       // Update the store state
       this.storedUser = user;
-      this.userObject = user;
     },
 
     logout() {

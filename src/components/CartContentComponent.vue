@@ -1,7 +1,6 @@
 <template>
     <div v-for="item in cart.items" :key="item.id" class="cart-item p-2 border-b border-gray-200">
       <div class="flex items-center space-x-2">
-<!--        <button @click="removeFromCart(item.id)" class="ml-auto btn btn-ghost btn-xs text-primary">X</button>-->
         <button @click="removeFromCart(item.id, $event)" class="ml-auto btn btn-ghost btn-xs text-primary">X</button>
         <div class="flex-shrink-0">
           <img :src='"http://localhost:8000/images/products/" + item.image_path' alt="Product image" class="w-16 h-16 object-cover">
@@ -62,7 +61,7 @@ img {
 
 @media (max-width: 640px) {
   .btn {
-    padding: 0.375rem 0.75rem; /* Larger touch targets */
+    padding: 0.375rem 0.75rem;
   }
   .btn-xs {
     padding: 0.25rem 0.5rem;

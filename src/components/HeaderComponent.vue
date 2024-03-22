@@ -38,7 +38,7 @@
       <div class="relative">
         <button @click.stop="toggleCartDropdown" class="btn btn-ghost btn-circle">
           <img src="../assets/icons/shopping_cart.svg" alt="Cart Icon">
-          <span v-if="itemCount > 0" class="indicator bg-red-500 text-white rounded-full w-4 h-4 flex justify-center items-center text-xs absolute -top-1 -right-1">{{ itemCount }}</span>
+          <span v-if="itemCount > 0" class="indicator bg-red-500 text-white rounded-full w-4 h-4 flex justify-center items-center text-xs absolute top-1.5 right-1.5">{{ itemCount }}</span>
         </button>
         <div v-if="showCartDropdown" ref="dropdownRef" class="cart-dropdown absolute right-0 z-50 w-72 max-h-96 bg-white shadow-md overflow-y-auto">
           <CartContentComponent/>
@@ -49,10 +49,10 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cart';
 import { useUserStore } from '@/stores/user';
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import CartContentComponent from '@/components/CartContentComponent.vue'
 
 const itemCount = computed(() => useCartStore().items.length);
@@ -78,6 +78,13 @@ function toggleMenuDropdown() {
       showMenuDropdown.value = false;
     }
 }
+
+const route = useRoute();
+
+watch(route, () => {
+  showMenuDropdown.value = false;
+  showCartDropdown.value = false;
+});
 
   function toggleCartDropdown() {
     showCartDropdown.value = !showCartDropdown.value;

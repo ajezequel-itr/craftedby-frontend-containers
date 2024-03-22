@@ -44,7 +44,7 @@
 <!--            </figure>-->
 
             <div class="card-body pl-2">
-              <h2 class="card-title open-sans-semibold uppercase">{{ product.name }}</h2>
+              <h2 class="card-title open-sans-semibold uppercase text-lg">{{ product.name }}</h2>
               <p class="price-text pb-3">€ {{ product.price }}</p>
               <p class="description line-clamp-2">{{ product.description }}</p>
             </div>
@@ -148,12 +148,11 @@ const clearAllFilters = () => {
   showFilters.value = false;
   fetchProducts();
 };
-
 </script>
 
 <style scoped>
 
-.price-text, .description {
+.description {
   font-size: 16px;
   color: #807F86;
 }
@@ -168,5 +167,6 @@ const clearAllFilters = () => {
 .card-body {
   min-height: 200px;
 }
+
 
 </style>
