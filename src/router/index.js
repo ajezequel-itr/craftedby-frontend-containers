@@ -8,6 +8,8 @@ import AdminPanelComponent from '@/components/AdminPanelComponent.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
 import RegisterComponent from '@/components/RegisterComponent.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import ForgotPasswordComponent from '@/components/ForgotPasswordComponent.vue'
+import ResetPasswordComponent from '@/components/ResetPasswordComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +66,16 @@ const router = createRouter({
       path:'/admin',
       name: 'admin',
       component: AdminPanelComponent
+    },
+    {
+      path: '/password-reset',
+      name: 'password-reset',
+      component: ForgotPasswordComponent
+    },
+    {
+      path: '/reset-password',
+      name: 'resetPasswordForm',
+      component: ResetPasswordComponent,
     }
   ]
 })

@@ -9,11 +9,13 @@
       <label class="input input-bordered flex items-center gap-2 mt-4">
         <input type="password" v-model="password" class="grow" placeholder="Mot de passe" />
       </label>
+      <router-link to="/password-reset" class="">
+        <p class="text-sm">Mot de passe oublié</p>
+      </router-link>
 
       <button type="submit" class="w-full mt-4 bg-primary text-white py-2 px-4 focus:outline-none focus:shadow-outline">Login</button>
     </form>
     <p class="center">OU</p>
-
     <router-link to="/register" class="block text-center mt-2">
       <button class="w-full btn bg-secondary rounded-none">Créer un compte</button>
     </router-link>

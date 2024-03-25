@@ -19,6 +19,14 @@ export const useUserStore = defineStore("user", {
         this.storeUser(res.data.token, res.data.user);
     },
 
+    async passwordReset(email){
+      await api.post('/password/reset-link', {email});
+    },
+
+    async newPassword(userData) {
+      await api.post ('/password/reset', userData);
+    },
+
     storeUser(token, user) {
       // Save the token to localStorage
       localStorage.setItem('token', token);
