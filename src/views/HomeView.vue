@@ -10,7 +10,7 @@
           v-if="slicedCustomProducts && slicedCustomProducts.length">
 
           <!-- Product Cards for Customizable Products -->
-          <div v-for="product in slicedCustomProducts" :key="product.id" class="card w-full">
+          <div v-for="product in slicedCustomProducts" :key="product.id" class="card max-w-60">
             <router-link :to="`/products/${product.id}`">
               <figure><img src="/assiette.png" alt="Product image" class="object-cover w-full"></figure>
               <!--            put back to get img from backend:-->

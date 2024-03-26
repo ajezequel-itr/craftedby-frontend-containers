@@ -5,16 +5,14 @@ import FooterComponent from '@/components/FooterComponent.vue'
 </script>
 
 <template>
+  <div class="min-h-screen flex flex-col">
   <Header />
-<!--  <main class="center">-->
-  <main class="flex justify-center items-center">
+    <main class="flex flex-grow md:flex md:items-center">
     <RouterView />
   </main>
   <FooterComponent />
+  </div>
 </template>
 
 <style scoped>
-main {
-  min-height: 100vh;
-}
 </style>

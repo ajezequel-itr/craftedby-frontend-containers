@@ -1,12 +1,12 @@
 <template>
-  <div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-md">
+  <div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-md min-w-full md:min-w-96">
     <form @submit.prevent="login" class="mb-4">
 
-      <label class="input input-bordered flex items-center gap-2 mt-4">
+      <label class="input input-bordered rounded-none flex items-center gap-2 mt-4">
         <input type="email" v-model="email" class="grow" placeholder="Email" />
       </label>
 
-      <label class="input input-bordered flex items-center gap-2 mt-4">
+      <label class="input input-bordered rounded-none flex items-center gap-2 mt-4">
         <input type="password" v-model="password" class="grow" placeholder="Mot de passe" />
       </label>
       <router-link to="/password-reset" class="">
@@ -33,7 +33,6 @@ const password = ref("");
 
 const login = async () => {
   await userStore.signIn(email.value, password.value);
-  // userStore.storeUser(userStore.user.token, userStore.user.user);
   await router.push('/boutique');
 };
 </script>

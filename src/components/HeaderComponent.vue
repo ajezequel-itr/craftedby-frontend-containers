@@ -62,7 +62,6 @@ const dropdownRef = ref(null);
 const showMenuDropdown = ref(false);
 const menuDropdownRef = ref(null);
 
-
 const userStore = useUserStore();
 
 const newUserCheck = computed(() => {

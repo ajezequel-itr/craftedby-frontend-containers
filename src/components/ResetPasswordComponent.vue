@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-md mx-auto p-6 md:shadow-md rounded-md text-center text-balance">
+  <div class="max-w-md mx-auto p-6 md:shadow-md rounded-md text-center text-balance mt-5">
     <p>Renseignez votre email et nouveau mot de passe:</p>
     <form @submit.prevent="sendEmail" class="mb-4">
 

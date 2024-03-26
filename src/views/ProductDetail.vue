@@ -9,23 +9,27 @@
     </div>
     <div v-else-if="product" class="container mx-auto p-4">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!--        image-->
         <div class="product-image">
           <figure><img src="/assiette.png" alt="Product image" class="h-auto rounded-lg shadow-md" ></figure>
         </div>
+<!--        product info-->
         <div class="product-content">
           <h1 class="text-3xl font-bold mb-3 uppercase">{{ product.name }}</h1>
           <div class="product-meta mb-4">
-            <div class="badge badge-secondary badge-outline price">{{ product.price }}€</div>
-            <div class="badge badge-info badge-outline">Material: {{ product.material }}</div>
-            <div class="badge badge-accent badge-outline">Color: {{ product.color }}</div>
-            <div class="badge" :class="product.stock > 0 ? 'badge-success' : 'badge-error'">
-              {{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}
-            </div>
+            <div class="badge badge-secondary badge-outline price">€{{ product.price }}</div>
+            <div class="badge badge-info badge-outline">Matériel: {{ product.material }}</div>
+            <div class="badge badge-accent badge-outline">Couleur: {{ product.color }}</div>
+            <div class="badge badge-accent badge-outline">{{ product.stock > 0 ? 'En stock' : 'Plus en stock' }}</div>
           </div>
           <div class="product-description mb-4">
-            <h2 class="text-2xl font-bold mb-2">Description</h2>
-            <p class="description">Lorem ipsum dolor sit amet conse bolli tetur</p>
             <p>{{ product.description }}</p>
+          </div>
+          <div class="flex items-center">
+            <button @click="decreaseQuantity(item)" class="btn btn-ghost btn-xs">-</button>
+            <span class="text-sm">1</span>
+
+            <button @click="increaseQuantity(item)" class="btn btn-ghost btn-xs">+</button>
           </div>
           <div class="pt-8">
             <CTAButtonBase v-if="product.stock > 0" @click="addToCart(product)" text="AJOUTER AU PANIER" />

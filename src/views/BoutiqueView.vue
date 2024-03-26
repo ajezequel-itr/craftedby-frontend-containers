@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5">
+    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5 md:ml-24">
       <!-- Mobile Filters Dropdown -->
       <div class="block md:hidden">
 <!--      <CTAButtonBase class="mt-2" label="Filtres" text="FILTRER" @click="toggleFiltersDropdown" />-->
@@ -34,19 +34,23 @@
       </div>
       <!-- Product grid -->
       <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5" v-if="products && products.length">
-      <div v-for="product in products" :key="product.id" class="card w-full">
+      <div v-for="product in products" :key="product.id" class="card max-w-72">
           <router-link :to="`/products/${product.id}`">
 
-          <figure><img src="/assiette.png" alt="Product image" class="object-cover w-full" ></figure>
-<!--            put back to get img from backend:-->
 <!--            <figure>-->
-<!--              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover w-full" />-->
+<!--&lt;!&ndash;              <img src="@/assets/images/flat-lay-plates.webp" alt="Product image" class="object-cover h-64 w-52" />&ndash;&gt;-->
+<!--              <img src="/assiette.png" alt="Product image" class="object-cover h-80 w-72"/>-->
 <!--            </figure>-->
 
-            <div class="card-body pl-2">
-              <h2 class="card-title open-sans-semibold uppercase text-lg">{{ product.name }}</h2>
-              <p class="price-text pb-3">€ {{ product.price }}</p>
-              <p class="description line-clamp-2">{{ product.description }}</p>
+<!--            put back to get img from backend:-->
+            <figure>
+              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover h-80 w-72" />
+            </figure>
+
+            <div class="card-body pl-2 line-clamp-4">
+              <h2 class="card-title open-sans-semibold uppercase text-lg pt-3">{{ product.name }}</h2>
+              <p class="price-text">€ {{ product.price }}</p>
+              <p class="description pt-5">{{ product.description }}</p>
             </div>
           </router-link>
           <div>
@@ -57,7 +61,7 @@
         </div>
       </div>
 <!--      If no products found by filters-->
-      <div v-else class="center">
+      <div v-else class="text-balance center">
         <p>Nous n'avons pas de produits pour cette selection.</p>
       </div>
     </div>
@@ -166,7 +170,7 @@ const clearAllFilters = () => {
 
 .card-body {
   min-height: 200px;
+  padding: 0;
 }
-
 
 </style>
