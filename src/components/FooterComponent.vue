@@ -1,6 +1,6 @@
 <template>
   <footer class="footer footer-center p-4 bg-black text-base-100 mt-20">
-    <!-- Logo and Button - Only visible above md: breakpoint -->
+    <!-- Logo and Button - -->
     <div class="flex justify-between w-full max-w-6xl mx-auto hidden md:flex">
       <div class="flex flex-col items-start">
         <div class="flex flex-row">
@@ -8,7 +8,12 @@
           <p class="btn btn-ghost normal-case text-xl logo-text">CraftedBy</p>
         </div>
         <p>Lorem ipsum dolor sit amet conse bolli tetur conjo</p>
-        <button class="btn btn-outline mt-2">DEVENIR VENDEUR ARTISAN →</button>
+
+<!--        <RouterLink :to="newUserCheck" class="btn btn-ghost btn-circle">-->
+        <RouterLink to="/new-business" class="btn btn-ghost btn-circle">
+          <button class="btn btn-outline mt-2">DEVENIR VENDEUR ARTISAN →</button>
+        </RouterLink>
+
       </div>
       <div class="grid grid-cols-2 gap-8 mt-8 hidden md:grid">
         <div>
@@ -30,7 +35,7 @@
       </div>
     </div>
 
-    <!-- About and Services - Only visible under md: breakpoint -->
+    <!-- About and Services -->
     <div class="grid grid-cols-2 gap-8 mt-8 md:hidden">
       <div>
         <h3 class="font-bold uppercase mb-4">A propos</h3>
@@ -50,12 +55,22 @@
       </div>
     </div>
 
-    <!-- Copyright Text - Always visible, but styling adjusted for md: -->
+    <!-- Copyright Text - -->
     <p class="mt-8 md:mt-2">© 2024 CraftedBy Inc. Tous droits réservés.</p>
   </footer>
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router'
+import { computed } from 'vue'
+import { useUserStore } from '@/stores/user.js'
+
+// const userStore = useUserStore();
+
+// const newUserCheck = computed(() => {
+//   return userStore.userObject ? '/new-business' : '/login';
+// });
+
 </script>
 
 <style scoped>

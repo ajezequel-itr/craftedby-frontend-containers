@@ -6,7 +6,7 @@ export default {
   daisyui: {
   themes: [
     {
-      mytheme: {
+      artisan: {
         primary: "#C14029",
         secondary: "#DAA07A",
         accent: "#E8C8AB",
@@ -17,7 +17,11 @@ export default {
         warning: "#fcd34d",
         error: "#f87171",
       }
-    }
+    },
+    "pastel",
+    "autumn",
+    "garden",
+    "retro",
   ],
   }
 };

@@ -10,10 +10,12 @@ import Footer from './components/FooterComponent.vue';
 
 const app = createApp(App)
 
-app.use(createPinia())
+const pinia = createPinia()
+app.use(pinia)
+
 app.use(router)
+
+app.mount('#app')
 
 app.component('HeaderComponent', Header);
 app.component('FooterComponent', Footer);
-
-app.mount('#app')
