@@ -77,22 +77,4 @@ function addToCart(productToAdd) {
 
 <style scoped>
 
-.price-text, .description {
-  font-size: 16px;
-  color: #807F86;
-}
-
-.back-button {
-  position: absolute;
-  top: 6rem/* 80px */;
-  left: 2rem/* 80px */;
-}
-
-@media (min-width: 1024px) {
-  .back-button {
-    position: absolute;
-    top: 6rem/* 80px */;
-    left: 10rem/* 80px */;
-  }
-}
 </style>

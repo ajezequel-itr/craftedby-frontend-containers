@@ -26,23 +26,27 @@
 import { ref } from 'vue';
 import { useUserStore } from "../stores/user";
 import router from '@/router/index.js';
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const userStore = useUserStore();
 const email = ref("");
 const password = ref("");
 
 const login = async () => {
   await userStore.signIn(email.value, password.value);
-  await router.push('/boutique');
+  if (route.query.to === "newBusiness"){
+    await router.push('/new-business');
+  }
+  if (route.query.to === "checkout"){
+    await router.push('/checkout');
+  }
+  else {
+    await router.push('/boutique');
+  }
 };
 </script>
 
 <style>
-.custom-input {
-  border: 1px solid black;
-  border-radius: 0;
-  font-family: 'open-sans-regular', sans-serif;
-  font-size: 0.875rem;
-}
 
 </style>

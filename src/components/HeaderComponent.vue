@@ -33,7 +33,7 @@
 
     <!-- Profile and Cart buttons -->
     <div class="navbar-end" style="margin-right: 5%;">
-      <RouterLink :to="newUserCheck" class="btn btn-ghost btn-circle">
+      <RouterLink to="/profile" class="btn btn-ghost btn-circle">
         <img src="../assets/icons/avatar.svg" alt="Icon profile">
       </RouterLink>
       <div class="relative">
@@ -52,7 +52,6 @@
 <script setup>
 import { RouterLink, useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cart';
-import { useUserStore } from '@/stores/user';
 import { computed, onMounted, ref, watch } from 'vue'
 import CartContentComponent from '@/components/CartContentComponent.vue'
 
@@ -63,21 +62,13 @@ const dropdownRef = ref(null);
 const showMenuDropdown = ref(false);
 const menuDropdownRef = ref(null);
 
-const userStore = useUserStore();
-
-const newUserCheck = computed(() => {
-  return userStore.userObject ? '/profile' : '/login';
-});
-
 function toggleMenuDropdown() {
   showMenuDropdown.value = !showMenuDropdown.value;
 }
   // Click outside menu to close
   function handleClickOutsideMenu(event) {
-    // if (menuDropdownRef.value && !menuDropdownRef.value.contains(event.target)) {
     if (menuDropdownRef.value && !menuDropdownRef.value.contains(event.target) && showMenuDropdown.value) {
-      // showMenuDropdown.value = false;
-      toggleMenuDropdown(); // This ensures toggle behavior is correct
+      toggleMenuDropdown();
     }
 }
 

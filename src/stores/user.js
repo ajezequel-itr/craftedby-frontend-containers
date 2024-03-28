@@ -14,6 +14,10 @@ export const useUserStore = defineStore("user", {
       this.storeUser(res.data.token, res.data.user);
     },
 
+    async createBusiness(businessData) {
+      await api.post(`/businesses`, businessData);
+    },
+
     async signIn(email, password) {
         const res = await api.post('/login', { email, password });
         this.storeUser(res.data.token, res.data.user);
