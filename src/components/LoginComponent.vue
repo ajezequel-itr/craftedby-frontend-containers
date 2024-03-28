@@ -10,7 +10,7 @@
         <input type="password" v-model="password" class="grow" placeholder="Mot de passe" />
       </label>
       <router-link to="/password-reset" class="">
-        <p class="text-sm">Mot de passe oublié</p>
+        <p class="text-sm mt-2">Mot de passe oublié</p>
       </router-link>
 
       <button type="submit" class="w-full mt-4 bg-primary text-white py-2 px-4 focus:outline-none focus:shadow-outline">Login</button>
