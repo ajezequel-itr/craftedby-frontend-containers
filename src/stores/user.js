@@ -36,6 +36,7 @@ export const useUserStore = defineStore("user", {
       // Update the store state
       this.token = token;
       this.storedUser = user;
+      this.userObject = user;
     },
 
     storeOnlyUser(user) {
