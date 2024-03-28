@@ -1,17 +1,18 @@
 <template>
   <div class="navbar sticky top-0 z-50 bg-accent md:min-h-[50px]">
+
     <!-- Burger menu button for mobile screens only -->
     <div class="navbar-start" style="margin-left: 5%;">
-      <div class="dropdown">
-        <button @click="toggleMenuDropdown" class="btn btn-ghost md:hidden">
+      <div class="dropdown md:hidden" ref="menuDropdownRef">
+        <button @click.stop="toggleMenuDropdown" class="btn btn-ghost btn-circle md:hidden">
           <img src="../assets/icons/menu.svg" alt="Menu Icon">
         </button>
         <div class="hidden md:flex">
           <img alt="Vue logo" class="h-10 w-10" src="@/assets/CB_logo.svg" />
           <a class="btn btn-ghost normal-case text-xl logo-text">CraftedBy</a>
         </div>
-        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 md:hidden">
-          <!-- Menu items -->
+        <ul v-if="showMenuDropdown" tabindex="0" class="text-xl menu absolute mt-3 p-2 shadow bg-base-100 w-52">
+        <!-- Menu items -->
           <li><RouterLink to="/">Accueil</RouterLink></li>
           <li><Router-link to="/boutique">Boutique</Router-link></li>
           <li><RouterLink to="/about">A propos</RouterLink></li>
@@ -73,8 +74,10 @@ function toggleMenuDropdown() {
 }
   // Click outside menu to close
   function handleClickOutsideMenu(event) {
-    if (menuDropdownRef.value && !menuDropdownRef.value.contains(event.target)) {
-      showMenuDropdown.value = false;
+    // if (menuDropdownRef.value && !menuDropdownRef.value.contains(event.target)) {
+    if (menuDropdownRef.value && !menuDropdownRef.value.contains(event.target) && showMenuDropdown.value) {
+      // showMenuDropdown.value = false;
+      toggleMenuDropdown(); // This ensures toggle behavior is correct
     }
 }
 
