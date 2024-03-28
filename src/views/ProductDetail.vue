@@ -1,6 +1,7 @@
 <template>
   <div>
-    <router-link to="/boutique" class="back-button">Retour</router-link>
+<!--    <router-link to="/boutique" class="back-button">Retour</router-link>-->
+    <BackButtonComponent></BackButtonComponent>
     <div v-if="loading" class="flex justify-center items-center h-screen loading loading-infinity loading-lg">
       Loading...
     </div>
@@ -48,6 +49,7 @@ import { useRoute } from 'vue-router';
 import api from '@/services/api';
 import CTAButtonBase from '@/components/CTAButtonBase.vue'
 import { useCartStore } from '@/stores/cart.js'
+import BackButtonComponent from '@/components/BackButtonComponent.vue'
 
 const route = useRoute();
 const product = ref(null);
