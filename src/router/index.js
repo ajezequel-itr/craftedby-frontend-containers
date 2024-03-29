@@ -89,7 +89,7 @@ const router = createRouter({
     },
     {
       path: '/new-business',
-      name: 'newBusiness',
+      name: 'new-business',
       component: BusinessRegisterComponent,
       beforeEnter: redirectToLogin,
     }

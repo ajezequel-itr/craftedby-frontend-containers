@@ -33,12 +33,14 @@ const userStore = useUserStore();
 const email = ref("");
 const password = ref("");
 
+console.log(route.query)
+
 const login = async () => {
   await userStore.signIn(email.value, password.value);
-  if (route.query.to === "newBusiness"){
+  if (route.query.to === "new-business"){
     await router.push('/new-business');
   }
-  if (route.query.to === "checkout"){
+  else if (route.query.to === "checkout"){
     await router.push('/checkout');
   }
   else {

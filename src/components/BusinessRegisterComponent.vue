@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-row items-center gap-20">
-    <form :data-theme="themePreview" class="form-control mt-8 mx-auto space-y-4 rounded-none" @submit.prevent="register">
+    <form :data-theme="themePreview" class="form-control mt-8 mx-auto space-y-4 rounded-none"
+          @submit.prevent="register">
 
       <h3 class="text-center text-balance">Renseignez les informations de votre entreprise ci-dessous:</h3>
 
@@ -116,12 +117,12 @@
 
       <div class="flex flex-row justify-around text-center">
 
-          <div v-for="theme in themes" :key="theme.id">
-            <input v-model="selectedTheme" :value="theme.id" class="radio" name="radio-theme" type="radio"/>
-            <label class="label">
-              <span class="label-text">{{ theme.name }}</span>
-            </label>
-          </div>
+        <div v-for="theme in themes" :key="theme.id">
+          <input v-model="selectedTheme" :value="theme.id" class="radio" name="radio-theme" type="radio" />
+          <label class="label">
+            <span class="label-text">{{ theme.name }}</span>
+          </label>
+        </div>
 
       </div>
 
@@ -175,8 +176,8 @@ const website = ref('')
 const bio = ref('')
 const history = ref('')
 const specialty = ref('')
-const selectedTheme = ref('' || 'mytheme')
-const user_id =  userStore.userObject.id
+const selectedTheme = ref('' || 'artisan')
+const user_id = userStore.userObject.id
 
 const register = async () => {
   try {
@@ -194,7 +195,7 @@ const register = async () => {
       history: history.value,
       user_id: user_id,
       specialty_id: specialty.value,
-      theme_id: selectedTheme.value,
+      theme_id: selectedTheme.value
     }
 
     await userStore.createBusiness(userInput)
