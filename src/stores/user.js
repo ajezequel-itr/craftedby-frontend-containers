@@ -32,34 +32,35 @@ export const useUserStore = defineStore("user", {
     },
 
     storeUser(token, user) {
-      // Save the token to localStorage
-      localStorage.setItem('token', token);
-      // Save the user to localStorage
-      localStorage.setItem('user', JSON.stringify(user));
-
       // Update the store state
       this.token = token;
       this.storedUser = user;
       this.userObject = user;
+
+      // Save the token to localStorage
+      localStorage.setItem('token', token);
+      // Save the user to localStorage
+      localStorage.setItem('user', JSON.stringify(user));
     },
 
     storeOnlyUser(user) {
-      // Save the user to localStorage
-      localStorage.setItem('user', JSON.stringify(user));
-
       // Update the store state
       this.storedUser = user;
+
+      // Save the user to localStorage
+      localStorage.setItem('user', JSON.stringify(user));
     },
 
     logout() {
-      // Clear the token and user from localStorage
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-
       // Reset the store state
       this.token = null;
       this.storedUser = null;
       this.userObject = null;
+
+      // Clear the token and user from localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+
     }
 
   },
