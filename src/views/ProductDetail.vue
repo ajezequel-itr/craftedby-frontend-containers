@@ -73,6 +73,14 @@ const cartStore = useCartStore();
 function addToCart(productToAdd) {
   cartStore.addToCart(productToAdd);
 }
+
+function increaseQuantity(item) {
+  cartStore.addToCart({ ...item, quantity: 1 });
+}
+
+function decreaseQuantity(item) {
+    cartStore.updateQuantity(item.id, item.quantity - 1);
+}
 </script>
 
 <style scoped>

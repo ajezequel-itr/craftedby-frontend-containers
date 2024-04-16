@@ -2,7 +2,8 @@
   <div class="color-filter-component open-sans-regular">
     <h2 class="color-title pb-2 font-bold">{{ title }}</h2>
     <div class="colors">
-      <div v-for="(isSelected, color) in selectedColors" :key="color" class="color-box" :style="{ backgroundColor: color }" @click="toggleColor(color)">
+      <div v-for="(isSelected, color) in selectedColors" :key="color" :style="{ backgroundColor: color }"
+           class="color-box" @click="toggleColor(color)">
         <div v-if="isSelected" class="color-selected-indicator"></div>
       </div>
     </div>
@@ -44,6 +45,50 @@ export default {
   }
 };
 </script>
+
+<!--<script setup>-->
+<!--import { defineEmits, ref } from 'vue'-->
+
+<!--// eslint-disable-next-line vue/valid-define-emits-->
+<!--const emit = defineEmits()-->
+
+<!--// const selectedColors = {-->
+<!--//   red: false,-->
+<!--//   blue: false,-->
+<!--//   green: false,-->
+<!--//   yellow: false,-->
+<!--//   black: false,-->
+<!--//   white: false-->
+<!--// }-->
+
+<!--const selectedColors = {-->
+<!--  red: ref(false),-->
+<!--  blue: ref(false),-->
+<!--  green: ref(false),-->
+<!--  yellow: ref(false),-->
+<!--  black: ref(false),-->
+<!--  white: ref(false)-->
+<!--};-->
+
+<!--function toggleColor(selectedColor) {-->
+<!--  // Reset all selections-->
+<!--  Object.keys(selectedColors).forEach(color => {-->
+<!--    selectedColors[color].value = false-->
+<!--  })-->
+<!--  // Set the selected color to true-->
+<!--  selectedColors[selectedColor].value = true-->
+<!--  emitColors()-->
+<!--}-->
+
+<!--function emitColors() {-->
+<!--  // Emit the selected color-->
+<!--  const selected = Object.keys(selectedColors).filter(-->
+<!--    color => selectedColors[color].value-->
+<!--  )-->
+<!--  // this.$emit('colorsChanged', selected);-->
+<!--  emit('colorsChanged', selected)-->
+<!--}-->
+<!--</script>-->
 
 <style scoped>
 .color-filter-component {

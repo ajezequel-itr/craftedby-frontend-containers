@@ -24,6 +24,7 @@
           Mettre à jour vos coordonnées
         </div>
         <div class="collapse-content">
+
           <p class="text-lg mb-4">Informations personnelles</p>
           <div class="grid grid-cols-2 gap-4">
             <div class="form-control">
@@ -74,6 +75,7 @@
             <CTAButtonPrimary customClass="btn btn-primary" text="Mettre à jour les informations"
                               @click="updateProfile"></CTAButtonPrimary>
           </div>
+
         </div>
       </div>
     </div>

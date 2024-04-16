@@ -11,7 +11,7 @@
           <p class="ml-2">FILTRER</p>
         </div>
         <div v-show="showFilters" class="filters-dropdown">
-          <CategoryComponent @categoryChanged="fetchProductsByCategory" />
+          <CategoryFilterComponent @categoryChanged="fetchProductsByCategory" />
           <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
           <PriceFilterComponent @priceChanged="fetchProductsByPrice" />
           <CTAButtonBase class="mt-4" text="Réinitialiser les filtres" @click="clearAllFilters" />
@@ -24,7 +24,9 @@
         <p v-if="products.length > 1" class="mt-10 text-sm">Trouvé {{ products.length }} produits</p>
         <p v-else-if="products.length === 1" class="mt-10 text-sm">Trouvé {{ products.length }} produit</p>
         <div class="divider"></div>
-        <CategoryComponent @categoryChanged="fetchProductsByCategory" />
+        <SearchInputComponent class="" @searchByKeyword="fetchProductsBySearch"></SearchInputComponent>
+        <div class="divider"></div>
+        <CategoryFilterComponent @categoryChanged="fetchProductsByCategory" />
         <div class="divider"></div>
         <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
         <div class="divider"></div>
@@ -73,11 +75,12 @@
 <script setup>
 import { onMounted, ref, reactive } from 'vue'
 import CTAButtonBase from '@/components/CTAButtonBase.vue'
-import CategoryComponent from '@/components/CategoryComponent.vue'
+import CategoryFilterComponent from '@/components/CategoryFilterComponent.vue'
 import ColorFilterComponent from '@/components/ColorFilterComponent.vue'
 import PriceFilterComponent from '@/components/PriceFilterComponent.vue'
 import { useCartStore } from '@/stores/cart'
 import api from '@/services/api'
+import SearchInputComponent from '@/components/SearchInputComponent.vue'
 
 // State to toggle mobile filters dropdown
 const showFilters = ref(false)
@@ -94,11 +97,12 @@ const products = ref([])
 const filters = reactive({
   category: '',
   color: '',
-  priceRange: { min: null, max: null }
+  priceRange: { min: null, max: null },
+  search: ''
 })
 
 const fetchProducts = async () => {
-  let endpoint = 'products/'
+  let endpoint = 'products'
 
   // Filter out empty values from the filters object
   const filteredParams = Object.fromEntries(
@@ -114,6 +118,12 @@ const fetchProducts = async () => {
   } catch (error) {
     console.error('Failed to fetch products:', error)
   }
+}
+
+// Updates the filter state and calls fetchProducts
+const fetchProductsBySearch = (searchTerm) => {
+  filters.search = searchTerm
+  fetchProducts()
 }
 
 // Updates the filter state and calls fetchProducts
@@ -141,7 +151,7 @@ onMounted(() => {
 })
 
 function getFullImagePath(imagePath) {
-  const apiBaseURL = 'http://192.168.1.70:8000/images/products/'
+  const apiBaseURL = `${import.meta.env.VITE_IMAGE_BASE_URL}/images/products/`;
   return `${apiBaseURL}${imagePath}`
 }
 
@@ -149,6 +159,7 @@ const clearAllFilters = () => {
   filters.category = ''
   filters.color = ''
   filters.priceRange = { min: null, max: null }
+  filters.searchKeyword = ''
 
   // Close the mobile filter dropdown after clearing
   showFilters.value = false
@@ -160,7 +171,6 @@ const clearAllFilters = () => {
 
 .description {
   font-size: 16px;
-  color: #807F86;
 }
 
 .filters-dropdown {

@@ -3,7 +3,8 @@
       <div class="flex items-center space-x-2">
         <button @click="removeFromCart(item.id, $event)" class="ml-auto btn btn-ghost btn-xs text-primary">X</button>
         <div class="flex-shrink-0">
-          <img :src='"http://localhost:8000/images/products/" + item.image_path' alt="Product image" class="w-16 h-16 object-cover">
+<!--          <img :src="${import.meta.env.VITE_IMAGE_BASE_URL} + item.image_path" alt="Product image" class="w-16 h-16 object-cover">-->
+          <img :src="imageUrl" alt="Product image" class="w-16 h-16 object-cover">
         </div>
         <div class="flex-grow">
           <p class="text-sm font-semibold">{{ item.name }}</p>
@@ -31,6 +32,10 @@ import router from '@/router/index.js'
 
 const cart = useCartStore();
 
+function imageUrl(){
+  return `${import.meta.env.VITE_IMAGE_BASE_URL}${this.item.image_path}`;
+}
+
 function removeFromCart(id) {
   event.stopPropagation(); //prevent click from bubbling up
   cart.removeFromCart(id);
@@ -47,6 +52,7 @@ function decreaseQuantity(item) {
     removeFromCart(item.id);
   }
 }
+
 function goToCheckout() {
   router.push('/checkout');
 }

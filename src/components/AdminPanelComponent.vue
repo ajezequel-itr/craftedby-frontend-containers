@@ -6,10 +6,15 @@
       <button class="btn btn-primary" @click="toggleCreateUserModal">Create User</button>
     </div>
     <div v-if="createUserModalVisible" class="bg-white p-4 rounded shadow-md mb-4">
-      <h3 class="text-lg font-bold mb-2">Create User</h3>
+      <h3 class="text-lg font-bold mb-2">Nouveau utilisateur</h3>
+      <a>Email</a>
       <input v-model="newUser.email" placeholder="Email" class="input mb-2">
-      <input type="password" v-model="newUser.password" placeholder="Password" class="input mb-2">
+      <a>Mot de passe</a>
+      <input type="password" v-model="newUser.password" placeholder="Mot de passe" class="input mb-2">
+      <a>Confirmation</a>
+      <input type="password" v-model="newUser.password_confirmation" name="password_confirmation" placeholder="Mot de passe" class="input mb-2" required minlength="6"/>
       <button class="btn btn-primary" @click="createUser">Submit</button>
+
     </div>
     <ul class="list-disc">
       <li v-for="user in users" :key="user.id" class="flex items-center justify-between bg-white p-4 rounded shadow-md mb-2">
@@ -33,7 +38,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import api from '@/services/api';
-import { useUserStore } from '@/stores/user'; // Adjust the import path as necessary
 
 const users = ref([]);
 const newUser = ref({ email: '', password: '' });
@@ -55,7 +59,7 @@ const createUser = async () => {
     await api.post('users', newUser.value);
     newUser.value = { email: '', password: '' };
     createUserModalVisible.value = false;
-    await fetchUsers(); // Refresh the list
+    await fetchUsers();
   } catch (error) {
     console.error("Failed to create user:", error);
   }
@@ -68,9 +72,9 @@ const showEditUserModal = (user) => {
 
 const updateUser = async () => {
   try {
-    await api.put(`users/${editUserData.value.id}`, editUserData.value);
+    await api.patch(`users/${editUserData.value.id}`, editUserData.value);
     editUserModalVisible.value = false;
-    await fetchUsers(); // Refresh the list
+    await fetchUsers();
   } catch (error) {
     console.error("Failed to update user:", error);
   }
@@ -79,7 +83,7 @@ const updateUser = async () => {
 const deleteUser = async (id) => {
   try {
     await api.delete(`users/${id}`);
-    await fetchUsers(); // Refresh the list
+    await fetchUsers();
   } catch (error) {
     console.error("Failed to delete user:", error);
   }

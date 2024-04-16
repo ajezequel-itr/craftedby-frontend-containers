@@ -8,21 +8,35 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      minPrice: null,
-      maxPrice: null,
-    };
-  },
-  methods: {
-    updatePriceFilter() {
-      this.$emit('priceChanged', { min: this.minPrice, max: this.maxPrice });
-    },
-  },
+<!--<script>-->
+<!--export default {-->
+<!--  data() {-->
+<!--    return {-->
+<!--      minPrice: null,-->
+<!--      maxPrice: null,-->
+<!--    };-->
+<!--  },-->
+<!--  methods: {-->
+<!--    updatePriceFilter() {-->
+<!--      this.$emit('priceChanged', { min: this.minPrice, max: this.maxPrice });-->
+<!--    },-->
+<!--  },-->
+<!--};-->
+<!--</script>-->
+
+<script setup>
+import {ref, defineEmits} from 'vue';
+
+const minPrice = ref(null);
+const maxPrice = ref(null);
+// eslint-disable-next-line vue/valid-define-emits
+const emit = defineEmits();
+
+const updatePriceFilter = () => {
+  emit('priceChanged', {min: minPrice.value, max: maxPrice.value});
 };
 </script>
+
 
 <style scoped>
 .price-filter-component {
