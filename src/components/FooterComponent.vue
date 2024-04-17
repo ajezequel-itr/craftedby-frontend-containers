@@ -56,7 +56,7 @@
     </div>
 
     <!-- Copyright Text - -->
-    <p class="mt-8 md:mt-2">© 2024 CraftedBy Inc. Tous droits réservés.</p>
+    <router-link to="/admin" class="mt-8 md:mt-2">© 2024 CraftedBy Inc. Tous droits réservés.</router-link>
   </footer>
 </template>
 
