@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5 md:ml-24">
-      <!-- Mobile Filters Dropdown -->
+<!--    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5 md:ml-24">-->
+    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5 px-5 md:px-24">
+    <!-- Mobile Filters Dropdown -->
       <div class="block md:hidden">
         <!--      <CTAButtonBase class="mt-2" label="Filtres" text="FILTRER" @click="toggleFiltersDropdown" />-->
         <div class="flex flex-row mt-10 ml-8">
@@ -20,8 +21,9 @@
         <p v-else-if="products.length === 1" class="mt-5 ml-8 text-sm">Trouvé {{ products.length }} produit</p>
       </div>
       <!-- Sidebar for desktop -->
-      <div class="hidden md:block md:col-span-1">
-        <p v-if="products.length > 1" class="mt-10 text-sm">Trouvé {{ products.length }} produits</p>
+<!--      <div class="hidden md:block md:col-span-1">-->
+      <div class="hidden md:block md:col-span-1 sticky top-5 h-screen overflow-auto">
+      <p v-if="products.length > 1" class="mt-10 text-sm">Trouvé {{ products.length }} produits</p>
         <p v-else-if="products.length === 1" class="mt-10 text-sm">Trouvé {{ products.length }} produit</p>
         <div class="divider"></div>
         <SearchInputComponent class="" @searchByKeyword="fetchProductsBySearch"></SearchInputComponent>
@@ -34,11 +36,14 @@
         <div class="divider"></div>
         <CTAButtonBase text="Réinitialiser les filtres" @click="clearAllFilters" />
       </div>
+
       <!-- Product grid -->
       <div
         v-if="products && products.length"
-        class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5">
-        <div v-for="product in products" :key="product.id" class="card max-w-72">
+        class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 col-start-2 mt-10">
+      <!--        class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5">-->
+
+        <div v-for="product in products" :key="product.id" class="result card max-w-72">
           <router-link :to="`/products/${product.id}`">
 
             <!--            <figure>-->
@@ -63,9 +68,19 @@
             <CTAButtonBase v-else-if="product.stock <= 0" text="PLUS DISPONIBLE" />
           </div>
         </div>
+
+        <InfiniteLoading @infinite="load">
+          <template #complete>
+            <div class="mt-10">Bravo, vous êtes arrivé au bout !</div>
+          </template>
+          <template #error>
+            <div>Aucun produit trouvé pour cette sélection.</div>
+          </template>
+        </InfiniteLoading>
+
       </div>
       <!--      If no products found by filters-->
-      <div v-else class="text-balance center">
+      <div v-else class="text-balance center-container">
         <p>Nous n'avons pas de produits pour cette selection.</p>
       </div>
     </div>
@@ -82,6 +97,9 @@ import { useCartStore } from '@/stores/cart'
 import api from '@/services/api'
 import SearchInputComponent from '@/components/SearchInputComponent.vue'
 
+import InfiniteLoading from 'v3-infinite-loading'
+import 'v3-infinite-loading/lib/style.css'
+
 // State to toggle mobile filters dropdown
 const showFilters = ref(false)
 
@@ -91,9 +109,9 @@ function toggleFiltersDropdown() {
 }
 
 const cartStore = useCartStore()
-
 const products = ref([])
-// Use a reactive object to maintain the state of all filters
+const hasMorePages = ref(true)
+
 const filters = reactive({
   category: '',
   color: '',
@@ -101,24 +119,50 @@ const filters = reactive({
   search: ''
 })
 
+// const endpoint = 'products'
+let currentPage = 1
+let lastFilter = JSON.stringify(filters)
+
 const fetchProducts = async () => {
-  let endpoint = 'products'
 
-  // Filter out empty values from the filters object
-  const filteredParams = Object.fromEntries(
-    Object.entries(filters).filter(([_, value]) => value !== '' && value !== null)
-  )
+  const currentFilter = JSON.stringify(filters)
+  const isNewSearch = lastFilter !== currentFilter
+  lastFilter = currentFilter
 
+  if (isNewSearch) {
+    currentPage = 1
+    products.value = []
+    hasMorePages.value = true
+  }
+
+  if (!hasMorePages.value) return false
+
+  const filteredParams = {
+    ...Object.fromEntries(Object.entries(filters).filter(([_, value]) => value !== '' && value != null)),
+    page: currentPage
+  }
   try {
-    //Let Axios figure out key:value filters from filters object
-    const response = await api.get(endpoint, {
-      params: filteredParams
-    })
-    products.value = response.data
+    const response = await api.get('products', { params: filteredParams })
+    if (response.data.data.length) {
+      products.value = [...products.value, ...response.data.data]
+      currentPage++
+    } else {
+      hasMorePages.value = false
+    }
   } catch (error) {
     console.error('Failed to fetch products:', error)
   }
 }
+
+const load = async ($state) => {
+  await fetchProducts()
+  if (hasMorePages.value) {
+    $state.loaded()
+  } else {
+    $state.complete()
+  }
+}
+
 
 // Updates the filter state and calls fetchProducts
 const fetchProductsBySearch = (searchTerm) => {
@@ -146,24 +190,26 @@ const fetchProductsByCategory = (category) => {
   fetchProducts()
 }
 
+const clearAllFilters = () => {
+  filters.category = ''
+  filters.color = ''
+  filters.priceRange = { min: null, max: null }
+  filters.search = ''
+
+  currentPage = 1
+  products.value = []
+  showFilters.value = false
+  hasMorePages.value = true
+  fetchProducts()
+}
+
 onMounted(() => {
   fetchProducts()
 })
 
 function getFullImagePath(imagePath) {
-  const apiBaseURL = `${import.meta.env.VITE_IMAGE_BASE_URL}/images/products/`;
+  const apiBaseURL = `${import.meta.env.VITE_IMAGE_BASE_URL}/images/products/`
   return `${apiBaseURL}${imagePath}`
-}
-
-const clearAllFilters = () => {
-  filters.category = ''
-  filters.color = ''
-  filters.priceRange = { min: null, max: null }
-  filters.searchKeyword = ''
-
-  // Close the mobile filter dropdown after clearing
-  showFilters.value = false
-  fetchProducts()
 }
 </script>
 
@@ -184,5 +230,4 @@ const clearAllFilters = () => {
   min-height: 200px;
   padding: 0;
 }
-
 </style>

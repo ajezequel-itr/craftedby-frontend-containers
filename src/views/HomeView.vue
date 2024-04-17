@@ -2,41 +2,31 @@
   <div class="mx-auto">
 <BannerComponent></BannerComponent>
     <!-- PERSONALISABLE Section -->
-    <div class="md:mt-20 mt-10 mb-10">
-      <div class="mx-auto">
-        <h2 class="text-center text-3xl open-sans-semibold mb-10">PERSONALISABLE</h2>
-        <div
-          class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5"
-          v-if="slicedCustomProducts && slicedCustomProducts.length">
-
-          <!-- Product Cards for Customizable Products -->
-          <div v-for="product in slicedCustomProducts" :key="product.id" class="card max-w-60">
-            <router-link :to="`/products/${product.id}`">
-              <figure><img src="/assiette.png" alt="Product image" class="object-cover w-full"></figure>
-              <!--            put back to get img from backend:-->
-              <!--            <figure>-->
-              <!--              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover w-full" />-->
-              <!--            </figure>-->
-
-              <div class="card-body pl-2">
-                <h2 class="card-title open-sans-semibold uppercase">{{ product.name }}</h2>
-                <p class="price-text pb-3">€ {{ product.price }}</p>
-                <p class="description line-clamp-2">{{ product.description }}</p>
-              </div>
-            </router-link>
-            <div>
-              <!--            Show not available instead of add to cart if stock = 0 -->
-              <CTAButtonBase v-if="product.stock > 0" @click="cartStore.addToCart(product)" text="AJOUTER AU PANIER" />
-              <CTAButtonBase v-else-if="product.stock <= 0" text="PLUS DISPONIBLE" />
+    <div class="mt-10 md:mt-20 mb-10 mx-auto max-w-7xl">
+      <h2 class="text-center text-3xl open-sans-semibold mb-10">PERSONALISABLE</h2>
+      <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+           v-if="slicedCustomProducts && slicedCustomProducts.length">
+        <div v-for="product in slicedCustomProducts" :key="product.id" class="card w-full">
+          <router-link :to="`/products/${product.id}`">
+            <figure><img src="/assiette.png" alt="Product image" class="object-cover w-full"></figure>
+            <div class="card-body pl-2">
+              <h2 class="card-title open-sans-semibold uppercase">{{ product.name }}</h2>
+              <p class="price-text pb-3">€ {{ product.price }}</p>
+              <p class="description line-clamp-2">{{ product.description }}</p>
             </div>
+          </router-link>
+          <div>
+            <CTAButtonBase v-if="product.stock > 0" @click="cartStore.addToCart(product)" text="AJOUTER AU PANIER" />
+            <CTAButtonBase v-else-if="product.stock <= 0" text="PLUS DISPONIBLE" />
           </div>
         </div>
       </div>
     </div>
 
     <!-- Artisan Profile Block with Centered Text -->
-    <div class="flex justify-center py-10">
-      <div class="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto">
+    <div class="py-10 mx-auto max-w-4xl">
+      <div class="grid grid-cols-1 md:grid-cols-2">
+
         <div class="aspect-square flex flex-col justify-center items-center bg-gray-50 text-black p-5 space-y-4">
           <p class="px-4 py-2 text-lg">PROFIL ARTISAN</p>
           <p class="px-4 py-2">Lorem ipsum dolor sit amet...</p>
@@ -58,17 +48,16 @@
     </div>
 
     <!-- DECOUVRIR DES CREATIONS Section -->
-    <div class="md:mt-20 mt-10 mb-10">
-      <div class="mx-auto">
-        <h2 class="text-center text-3xl open-sans-semibold mb-10">DECOUVRIR DES CREATIONS</h2>
-        <div
-          class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5"
-          v-if="slicedCustomProducts && slicedCustomProducts.length">
+    <div class="mt-10 md:mt-20 mb-10 mx-auto max-w-7xl">
+      <h2 class="text-center text-3xl open-sans-semibold mb-10">DECOUVRIR DES CREATIONS</h2>
+      <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+           v-if="randomProducts && randomProducts.length">
 
           <!-- Product Cards for Random Products -->
           <div v-for="product in randomProducts" :key="product.id" class="card w-full">
             <router-link :to="`/products/${product.id}`">
               <figure><img src="/assiette.png" alt="Product image" class="object-cover w-full"></figure>
+
               <!--            put back to get img from backend:-->
               <!--            <figure>-->
               <!--              <img :src="getFullImagePath(product.image_path)" alt="Product image" class="object-cover w-full" />-->
@@ -81,7 +70,6 @@
               </div>
             </router-link>
             <div>
-              <!--            Show not available instead of add to cart if stock = 0 -->
               <CTAButtonBase v-if="product.stock > 0" @click="cartStore.addToCart(product)" text="AJOUTER AU PANIER" />
               <CTAButtonBase v-else-if="product.stock <= 0" text="PLUS DISPONIBLE" />
             </div>
@@ -89,7 +77,7 @@
         </div>
       </div>
     </div>
-  </div>
+<!--  </div>-->
 </template>
 
 <script setup>
@@ -105,10 +93,10 @@ const allProducts = ref([])
 // Fetch all products and filter for customizable ones
 onMounted(async () => {
   try {
-    const response = await api.get('/products')
-    allProducts.value = response.data
+    const response = await api.get('products', { params: { page: 1 } })
+    allProducts.value = response.data.data
     customisableProducts.value = allProducts.value.filter(product => product.customisable === 1)
-    shuffleProducts(allProducts.value) // Shuffle for random products display
+    shuffleProducts(allProducts.value)
   } catch (error) {
     console.error('Failed to fetch products:', error)
   }

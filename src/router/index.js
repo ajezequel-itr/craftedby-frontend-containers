@@ -12,7 +12,7 @@ import ForgotPasswordComponent from '@/components/ForgotPasswordComponent.vue'
 import ResetPasswordComponent from '@/components/ResetPasswordComponent.vue'
 import StripePaymentComponent from '@/components/StripePaymentComponent.vue'
 import BusinessRegisterComponent from '@/components/BusinessRegisterComponent.vue'
-import { redirectToLogin } from '@/router/middleware.js'
+import { checkAdminRights, redirectToLogin } from '@/router/middleware.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,7 +49,7 @@ const router = createRouter({
       path: '/checkout',
       name: 'checkout',
       component: CheckoutView,
-      beforeEnter: redirectToLogin,
+      beforeEnter: redirectToLogin
     },
     {
       path:'/login',
@@ -65,12 +65,13 @@ const router = createRouter({
       path:'/profile',
       name: 'profile',
       component: ProfileView,
-      beforeEnter: redirectToLogin,
+      beforeEnter: redirectToLogin
     },
     {
       path:'/admin',
       name: 'admin',
-      component: AdminPanelComponent
+      component: AdminPanelComponent,
+      beforeEnter: checkAdminRights
     },
     {
       path: '/password-reset',
@@ -80,18 +81,18 @@ const router = createRouter({
     {
       path: '/reset-password',
       name: 'resetPasswordForm',
-      component: ResetPasswordComponent,
+      component: ResetPasswordComponent
     },
-    {
-      path: '/payment',
-      name: 'payment',
-      component: StripePaymentComponent,
-    },
+    // {
+    //   path: '/payment',
+    //   name: 'payment',
+    //   component: StripePaymentComponent,
+    // },
     {
       path: '/new-business',
       name: 'new-business',
       component: BusinessRegisterComponent,
-      beforeEnter: redirectToLogin,
+      beforeEnter: redirectToLogin
     }
   ]
 })
