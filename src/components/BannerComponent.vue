@@ -1,5 +1,5 @@
 <template>
-  <div class="relative md:flex md:items-center md:justify-center">
+  <div class="relative md:flex md:items-center md:justify-center w-full">
     <!-- carousel photos -->
     <div class="carousel w-full hidden md:flex">
       <div v-show="currentSlide === 1" class="carousel-item relative w-full">
@@ -30,6 +30,7 @@
 
 <style>
 .slide-photo {
+  width: 100%;
   max-height: 500px;
   object-fit: cover;
 }

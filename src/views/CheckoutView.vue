@@ -6,6 +6,7 @@
     <p v-else-if="cart.itemCount === 1" class="mt-5 text-lg">Panier ({{ cart.itemCount }} produit)</p>
       </div>
     <div class="md:mt-5">
+<!--      <div v-if="notificationMessage"><notification-component :type="notificationType" :message="notificationMessage" /></div>-->
 
       <!--desktop view-->
       <table class="hidden md:table table-compact sm:table-normal">
@@ -82,17 +83,22 @@
       </div>
       <CTAButtonPrimary @click="submitOrder" text="COMMANDER" class="mt-10 w-full"/>
     </div>
+    <notification-component :type="notificationType" :message="notificationMessage" />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue'
 import OrderService from '@/services/OrderService';
 import { useUserStore } from '@/stores/user.js';
 import { useCartStore } from '@/stores/cart';
 import { useRouter } from 'vue-router';
 import UserInformationFieldComponent from '@/components/UserInformationFieldComponent.vue'
 import CTAButtonPrimary from '@/components/CTAButtonPrimary.vue'
+import NotificationComponent from '@/components/NotificationComponent.vue'
+
+const notificationMessage = ref('');
+const notificationType = ref('success');
 
 const imageBaseUrl = ref(import.meta.env.VITE_IMAGE_BASE_URL);
 
@@ -131,12 +137,23 @@ const submitOrder = async () => {
 
   try {
     const response = await OrderService.createOrder(orderData);
-    alert(`Merci pour votre commande! Numero de commande: ${response.order.order_number}`);
-    cart.clearCart();
-    await router.push('/profile');
+    // alert(`Merci pour votre commande! Numero de commande: ${response.order.order_number}`);
+    notificationMessage.value = `Merci pour votre commande! Numero de commande: ${response.order.order_number} Vous allez être dirigé vers votre profil maintenant`;
+    notificationType.value = 'success';
+    // cart.clearCart();
+    // await router.push('/profile');
+
+    await nextTick(); // Wait for the next DOM update to show the notification
+    setTimeout(async () => {
+      cart.clearCart();
+      await router.push('/profile');
+    }, 3000);
+
   } catch (error) {
     console.error('Error creating order:', error.message || 'Unknown error');
-    alert('Failed to create order.');
+    // alert('Failed to create order.');
+    notificationMessage.value = 'Failed to create order.';
+    notificationType.value = 'error';
   }
 };
 </script>
