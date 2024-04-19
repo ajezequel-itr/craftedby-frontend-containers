@@ -81,7 +81,7 @@
         <p class="text-left">Prix TTC</p>
         <p class="text-right">€{{ cart.totalPrice }}</p>
       </div>
-      <CTAButtonPrimary @click="submitOrder" text="COMMANDER" class="mt-10 w-full"/>
+      <CTAButtonPrimary @click="submitOrder" text="PAYER" class="mt-10 w-full"/>
     </div>
     <notification-component :type="notificationType" :message="notificationMessage" />
   </div>
