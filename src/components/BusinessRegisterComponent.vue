@@ -135,7 +135,7 @@
       <p class="text-center text-balance mb-5">Exemple de produit avec le thème choisi:</p>
 
       <figure>
-        <img alt="Product image" class="object-cover h-80 w-72" src="/assiette.png" />
+        <img alt="Product image" class="object-cover h-80 w-72" src="/src/assets/images/assiette.png" />
       </figure>
 
       <div class="card-body pl-2 line-clamp-4">
@@ -200,6 +200,8 @@ const register = async () => {
 
     await userStore.createBusiness(userInput)
     alert('Entreprise créée -> Commencez à vendre dès maintenant!')
+    const updatedUser = await userStore.getCurrentUser(userStore.userObject)
+    await userStore.storeUser(updatedUser)
     await router.push('/profile')
   } catch (error) {
     alert('Failed to create business. ' + (error.message || 'Unknown error'))

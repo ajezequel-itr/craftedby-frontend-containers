@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref } from 'vue'
 
 const searchInput = ref(null)
 // eslint-disable-next-line vue/valid-define-emits

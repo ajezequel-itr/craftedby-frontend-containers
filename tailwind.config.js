@@ -13,7 +13,7 @@ export default {
         neutral: "#191C15",
         'base-100': "#FFFFFF",
         info: "#bae6fd",
-        success: "#a7f3d0",
+        success: "#56ae57",
         warning: "#fcd34d",
         error: "#f87171",
       }

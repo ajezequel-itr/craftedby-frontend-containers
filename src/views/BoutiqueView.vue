@@ -1,32 +1,33 @@
 <template>
   <div class="container">
-<!--    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5 md:ml-24">-->
-    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5 px-5 md:px-24">
-    <!-- Mobile Filters Dropdown -->
+    <!--    <div class="main-content grid grid-cols-1 md:grid-cols-5 gap-5 md:ml-24">-->
+    <div class="main-content grid grid-cols-1 md:grid-cols-5 md:gap-5 px-5 md:px-24">
+
+      <!-- Mobile Filters Dropdown -->
       <div class="block md:hidden">
         <!--      <CTAButtonBase class="mt-2" label="Filtres" text="FILTRER" @click="toggleFiltersDropdown" />-->
-        <div class="flex flex-row mt-10 ml-8">
+        <div class="flex flex-row mt-10 ml-8 relative">
           <button @click="toggleFiltersDropdown">
             <img alt="Filter Icon" src="../assets/icons/filters.svg">
           </button>
           <p class="ml-2">FILTRER</p>
         </div>
-        <div v-show="showFilters" class="filters-dropdown">
+        <div v-show="showFilters" class="filters-dropdown z-20">
           <CategoryFilterComponent @categoryChanged="fetchProductsByCategory" />
           <ColorFilterComponent @colorsChanged="fetchProductsByColor" />
           <PriceFilterComponent @priceChanged="fetchProductsByPrice" />
           <CTAButtonBase class="mt-4" text="Réinitialiser les filtres" @click="clearAllFilters" />
         </div>
-        <p v-if="products.length > 1" class="mt-5 ml-8 text-sm">Trouvé {{ products.length }} produits</p>
-        <p v-else-if="products.length === 1" class="mt-5 ml-8 text-sm">Trouvé {{ products.length }} produit</p>
+        <p v-if="products.length > 1" class="mt-5 ml-8 whitespace-nowrap">Trouvé {{ products.length }} produits</p>
+        <p v-else-if="products.length === 1" class="mt-5 ml-8 whitespace-nowra">Trouvé {{ products.length }} produit</p>
       </div>
       <!-- Sidebar for desktop -->
 <!--      <div class="hidden md:block md:col-span-1">-->
-      <div class="hidden md:block md:col-span-1 sticky top-5 h-screen overflow-auto">
+      <div class="hidden md:block md:col-span-1 sticky top-20 h-screen overflow-auto w-full">
       <p v-if="products.length > 1" class="mt-10 text-sm">Trouvé {{ products.length }} produits</p>
         <p v-else-if="products.length === 1" class="mt-10 text-sm">Trouvé {{ products.length }} produit</p>
         <div class="divider"></div>
-        <SearchInputComponent class="" @searchByKeyword="fetchProductsBySearch"></SearchInputComponent>
+        <SearchInputComponent @searchByKeyword="fetchProductsBySearch"></SearchInputComponent>
         <div class="divider"></div>
         <CategoryFilterComponent @categoryChanged="fetchProductsByCategory" />
         <div class="divider"></div>
@@ -40,7 +41,7 @@
       <!-- Product grid -->
       <div
         v-if="products && products.length"
-        class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 col-start-2 mt-10">
+        class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 col-start-2 md:mt-10 mt-36">
       <!--        class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 md:col-span-4 md:ml-16 md:mt-20 mr-5 ml-5">-->
 
         <div v-for="product in products" :key="product.id" class="result card max-w-72">
@@ -64,17 +65,19 @@
           </router-link>
           <div>
             <!--            Show not available instead of add to cart if stock = 0 -->
-            <CTAButtonBase v-if="product.stock > 0" text="AJOUTER AU PANIER" @click="cartStore.addToCart(product)" />
+            <CTAButtonBase v-if="product.stock > 0" text="AJOUTER AU PANIER" @click="addToCart(product)" />
             <CTAButtonBase v-else-if="product.stock <= 0" text="PLUS DISPONIBLE" />
           </div>
         </div>
 
+        <notification-component :type="notificationType" :message="notificationMessage" />
+
         <InfiniteLoading @infinite="load">
           <template #complete>
-            <div class="mt-10">Bravo, vous êtes arrivé au bout !</div>
+            <div class="mt-10 w-full flex justify-center">Bravo, vous êtes arrivé au bout !</div>
           </template>
           <template #error>
-            <div>Aucun produit trouvé pour cette sélection.</div>
+            <div class="mt-10 w-full flex justify-center">Aucun produit trouvé pour cette sélection.</div>
           </template>
         </InfiniteLoading>
 
@@ -99,6 +102,17 @@ import SearchInputComponent from '@/components/SearchInputComponent.vue'
 
 import InfiniteLoading from 'v3-infinite-loading'
 import 'v3-infinite-loading/lib/style.css'
+import router from '@/router/index.js'
+import NotificationComponent from '@/components/NotificationComponent.vue'
+
+const notificationMessage = ref('');
+const notificationType = ref('success');
+
+function addToCart(product){
+  cartStore.addToCart(product)
+  notificationMessage.value = `Produit rajouté au panier !`;
+  notificationType.value = 'success';
+}
 
 // State to toggle mobile filters dropdown
 const showFilters = ref(false)
@@ -191,16 +205,18 @@ const fetchProductsByCategory = (category) => {
 }
 
 const clearAllFilters = () => {
-  filters.category = ''
-  filters.color = ''
-  filters.priceRange = { min: null, max: null }
-  filters.search = ''
+  // filters.category = ''
+  // filters.color = ''
+  // filters.priceRange = { min: null, max: null }
+  // filters.search = ''
+  //
+  // currentPage = 1
+  // products.value = []
+  // showFilters.value = false
+  // hasMorePages.value = true
+  // fetchProducts()
 
-  currentPage = 1
-  products.value = []
-  showFilters.value = false
-  hasMorePages.value = true
-  fetchProducts()
+  router.go(0);
 }
 
 onMounted(() => {
@@ -215,6 +231,10 @@ function getFullImagePath(imagePath) {
 
 <style scoped>
 
+img{
+  max-width: max-content;
+}
+
 .description {
   font-size: 16px;
 }
@@ -224,6 +244,10 @@ function getFullImagePath(imagePath) {
   flex-direction: column;
   padding: 10px;
   border: 1px solid #ccc;
+  position: absolute;
+  background-color: white;
+  width: max-content;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .card-body {

@@ -91,7 +91,7 @@
 import { RouterLink, useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import { computed, onMounted, ref, watch } from 'vue'
-import CartContentComponent from '@/components/CartContentComponent.vue'
+import CartContentComponent from '@/components/CartContentDropdownComponent.vue'
 import SearchInputComponent from '@/components/SearchInputComponent.vue'
 import router from '@/router/index.js'
 

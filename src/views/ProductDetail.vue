@@ -12,7 +12,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <!--        image-->
         <div class="product-image">
-          <figure><img src="/assiette.png" alt="Product image" class="h-auto rounded-lg shadow-md" ></figure>
+          <figure><img src="/src/assets/images/assiette.png" alt="Product image" class="h-auto rounded-lg shadow-md" ></figure>
         </div>
 <!--        product info-->
         <div class="product-content">

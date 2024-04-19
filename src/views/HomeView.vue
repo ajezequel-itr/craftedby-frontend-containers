@@ -1,14 +1,14 @@
 <template>
-  <div class="mx-auto">
+  <div class="flex-1">
 <BannerComponent></BannerComponent>
     <!-- PERSONALISABLE Section -->
     <div class="mt-10 md:mt-20 mb-10 mx-auto max-w-7xl">
       <h2 class="text-center text-3xl open-sans-semibold mb-10">PERSONALISABLE</h2>
-      <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+      <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mx-5 md:mx-0"
            v-if="slicedCustomProducts && slicedCustomProducts.length">
         <div v-for="product in slicedCustomProducts" :key="product.id" class="card w-full">
           <router-link :to="`/products/${product.id}`">
-            <figure><img src="/assiette.png" alt="Product image" class="object-cover w-full"></figure>
+            <figure><img src="/src/assets/images/assiette.png" alt="Product image" class="object-cover w-full"></figure>
             <div class="card-body pl-2">
               <h2 class="card-title open-sans-semibold uppercase">{{ product.name }}</h2>
               <p class="price-text pb-3">€ {{ product.price }}</p>
@@ -50,13 +50,13 @@
     <!-- DECOUVRIR DES CREATIONS Section -->
     <div class="mt-10 md:mt-20 mb-10 mx-auto max-w-7xl">
       <h2 class="text-center text-3xl open-sans-semibold mb-10">DECOUVRIR DES CREATIONS</h2>
-      <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+      <div class="product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mx-5 md:mx-0"
            v-if="randomProducts && randomProducts.length">
 
           <!-- Product Cards for Random Products -->
           <div v-for="product in randomProducts" :key="product.id" class="card w-full">
             <router-link :to="`/products/${product.id}`">
-              <figure><img src="/assiette.png" alt="Product image" class="object-cover w-full"></figure>
+              <figure><img src="/src/assets/images/assiette.png" alt="Product image" class="object-cover w-full"></figure>
 
               <!--            put back to get img from backend:-->
               <!--            <figure>-->

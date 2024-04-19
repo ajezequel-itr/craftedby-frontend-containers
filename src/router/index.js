@@ -10,9 +10,11 @@ import RegisterComponent from '@/components/RegisterComponent.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import ForgotPasswordComponent from '@/components/ForgotPasswordComponent.vue'
 import ResetPasswordComponent from '@/components/ResetPasswordComponent.vue'
-import StripePaymentComponent from '@/components/StripePaymentComponent.vue'
+// import StripePaymentComponent from '@/components/StripePaymentComponent.vue'
 import BusinessRegisterComponent from '@/components/BusinessRegisterComponent.vue'
-import { checkAdminRights, redirectToLogin } from '@/router/middleware.js'
+import { checkAdminRights, redirectToLogin, checkBusinessOwnerRights } from '@/router/middleware.js'
+import BusinessHomeView from '@/views/BusinessHomeView.vue'
+import CartOverviewComponent from '@/components/CartOverviewComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +46,11 @@ const router = createRouter({
       path: '/contact',
       name: 'contact',
       component: ContactView,
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: CartOverviewComponent,
     },
     {
       path: '/checkout',
@@ -93,7 +100,13 @@ const router = createRouter({
       name: 'new-business',
       component: BusinessRegisterComponent,
       beforeEnter: redirectToLogin
-    }
+    },
+    {
+      path: '/business-home',
+      name: 'business-home',
+      component: BusinessHomeView,
+      beforeEnter: checkBusinessOwnerRights
+    },
   ]
 })
 
