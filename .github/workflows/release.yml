@@ -1,3 +1,4 @@
+name: Release of the docker image
 on:
   push:
     branches:
@@ -27,9 +28,32 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-    - name: Build and push
-      uses: docker/build-push-action@v5
+    - name: Build image
+      run: |
+        docker build -t ${{ vars.DOCKER_HUB_REPO }}/craftedby-frontend:v1.0.0 .
+    
+    - name: Check image vulnerabilities
+      uses: aquasecurity/trivy-action@0.20.0
       with:
-        context: .
-        push: true
-        tags: ${{ vars.DOCKER_HUB_REPO }}/craftedby-frontend:v1.0.0
+        image-ref: '${{ vars.DOCKER_HUB_REPO }}/craftedby-frontend:v1.0.0'
+        format: 'table'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+    
+    - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        scan-type: 'fs'
+        format: 'github'
+        output: 'dependency-results.sbom.json'
+        image-ref: '.'
+        github-pat: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push image to DockerHub
+      run: |
+        docker push ${{ vars.DOCKER_HUB_REPO }}/craftedby-frontend:v1.0.0
+
