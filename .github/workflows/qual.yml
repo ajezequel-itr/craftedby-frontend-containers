@@ -1,11 +1,5 @@
 name: Quality of code and security checking
 on:
-  pull_request:
-    types:
-      - edited
-      - opened
-    branches:
-      - "*"
   push:
     branches:
       - "*"
