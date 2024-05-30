@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  release-image:
+  builde-image:
     environment: 'Apalia - Lab'
     name: build docker image
     runs-on: ubuntu-latest
@@ -40,6 +40,11 @@ jobs:
         image-ref: '${{ secrets.DOCKER_HUB_USERNAME }}/craftedby-frontend:v1.0.0'
         format: 'table'
         output: 'trivy-results.sarif'
+
+    - name: DEBUG
+      run: |
+        ls -a
+        cat trivy-results.sarif
 
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
