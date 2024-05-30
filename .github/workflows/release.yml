@@ -30,12 +30,12 @@ jobs:
 
     - name: Build image
       run: |
-        docker build -t ${{ vars.DOCKER_HUB_REPO }}/craftedby-frontend:v1.0.0 .
+        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/craftedby-frontend:v1.0.0 .
     
     - name: Check image vulnerabilities
       uses: aquasecurity/trivy-action@0.20.0
       with:
-        image-ref: '${{ vars.DOCKER_HUB_REPO }}/craftedby-frontend:v1.0.0'
+        image-ref: '${{ secrets.DOCKER_HUB_USERNAME }}/craftedby-frontend:v1.0.0'
         format: 'table'
         output: 'trivy-results.sarif'
 
@@ -55,5 +55,5 @@ jobs:
 
     - name: Push image to DockerHub
       run: |
-        docker push ${{ vars.DOCKER_HUB_REPO }}/craftedby-frontend:v1.0.0
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/craftedby-frontend:v1.0.0
 
