@@ -1,0 +1,21 @@
+on:
+  pull_request:
+    types:
+      - edited
+      - opened
+    branches:
+      - "*"
+  push:
+    branches:
+      - "*"
+
+jobs:
+  super-linter:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    steps:
+      - name: Super-Linter 
+        uses: super-linter/super-linter@v6.5.1
