@@ -2,7 +2,7 @@
 FROM node:22-alpine AS build
 COPY . /usr/src/fabriquepar
 WORKDIR /usr/src/fabriquepar
-ARG APP_URL=localhost
+ARG APP_URL=fabriquepar
 
 # Create .env file
 RUN echo "VITE_API_ENDPOINT=\"http://${APP_URL}/api\"" > .env && \

@@ -32,7 +32,7 @@ jobs:
 
     - name: Build image
       run: |
-        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/craftedby-frontend:v1.0.0 .
+        docker build --build-arg="APP_URL=fabriquepar.127.0.0.1.nip.io" -t ${{ secrets.DOCKER_HUB_USERNAME }}/craftedby-frontend:v1.0.0 .
     
     - name: Check image vulnerabilities
       uses: aquasecurity/trivy-action@0.20.0
