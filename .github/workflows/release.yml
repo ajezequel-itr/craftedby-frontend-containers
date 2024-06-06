@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-image:
-    environment: 'Apalia - Lab'
+    environment: Dev
     name: build docker image
     runs-on: ubuntu-latest
     
