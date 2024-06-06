@@ -18,4 +18,14 @@ FROM nginx:1.25.5
 COPY --from=build /usr/src/fabriquepar/dist usr/share/nginx/html/fabriquepar
 COPY --from=build /usr/src/fabriquepar/configuration/nginx.conf /etc/nginx/conf.d/default.conf
 
+# Prevent running as root
+RUN chown -R www-data:www-data /usr/share/nginx && chmod -R 755 /usr/share/nginx && \
+    chown -R www-data:www-data /var/cache/nginx && \
+    chown -R www-data:www-data /var/log/nginx 
+
+RUN touch /var/run/nginx.pid && \
+    chown -R www-data:www-data /var/run/nginx.pid
+
+USER www-data
+
 EXPOSE 80
