@@ -18,14 +18,15 @@ FROM nginx:1.25.5
 COPY --from=build /usr/src/fabriquepar/dist usr/share/nginx/html/fabriquepar
 COPY --from=build /usr/src/fabriquepar/configuration/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Prevent running as root
-RUN chown -R www-data:www-data /usr/share/nginx && chmod -R 755 /usr/share/nginx && \
-    chown -R www-data:www-data /var/cache/nginx && \
-    chown -R www-data:www-data /var/log/nginx 
+# Give ownership to root group (GID : 0) for rootless usage
+RUN chgrp -R root /usr/share/nginx && chmod -R g+rwX /usr/share/nginx && \
+    chgrp -R root /var/cache/nginx && chmod -R g+rwX /var/cache/nginx &&\
+    chgrp -R root /etc/nginx && chmod -R g+rwX /etc/nginx &&\
+    chgrp -R root /var/log/nginx && chmod -R g+rwX /var/log/nginx
 
 RUN touch /var/run/nginx.pid && \
-    chown -R www-data:www-data /var/run/nginx.pid
+    chgrp -R root /var/run/nginx.pid && chmod -R g+rwX /var/run/nginx.pid
 
-USER www-data
+USER 1001:root
 
-EXPOSE 80
+EXPOSE 8080
